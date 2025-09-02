@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProgramTm {
+public class courseTM {
     private String id;
     private String programName;
     private String duration;

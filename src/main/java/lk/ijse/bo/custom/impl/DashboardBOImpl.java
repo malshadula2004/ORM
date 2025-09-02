@@ -2,7 +2,7 @@ package lk.ijse.bo.custom.impl;
 
 import lk.ijse.bo.custom.DashboardBO;
 import lk.ijse.dao.DAOFactory;
-import lk.ijse.dao.custom.CulinaryProgramDAO;
+import lk.ijse.dao.custom.CourseDAO;
 import lk.ijse.dao.custom.QueryDAO;
 import lk.ijse.dao.custom.StudentDAO;
 import lk.ijse.dto.StudentDTO;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DashboardBOImpl implements DashboardBO {
 
-    CulinaryProgramDAO culinaryProgramDAO = (CulinaryProgramDAO) DAOFactory.getDAO(DAOFactory.DAOType.PROGRAM);
+    CourseDAO culinaryProgramDAO = (CourseDAO) DAOFactory.getDAO(DAOFactory.DAOType.PROGRAM);
     StudentDAO studentDAO = (StudentDAO) DAOFactory.getDAO(DAOFactory.DAOType.STUDENT);
     QueryDAO queryDAO = (QueryDAO) DAOFactory.getDAO(DAOFactory.DAOType.QUERY);
 

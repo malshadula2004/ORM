@@ -13,19 +13,32 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "students")
 public class Student {
 
     @Id
     private String studentId;
+
     private String name;
     private String address;
     private Long tel;
     private Date registrationDate;
     private int someInt;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
-    private List<Enrollment> enrollments = new ArrayList<>();
+    // 🔹 Many-to-Many relationship with Course
+    @ManyToMany
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<course> courses = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Payment> payments = new ArrayList<>();
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> lessons = new ArrayList<>();
 
     public Student(String studentId, String name, String address, Long tel, Date registrationDate) {
         this.studentId = studentId;
@@ -34,6 +47,8 @@ public class Student {
         this.tel = tel;
         this.registrationDate = registrationDate;
         this.someInt = 0;
-        this.enrollments = new ArrayList<>();
+        this.courses = new ArrayList<>();
+
+        this.lessons = new ArrayList<>();
     }
 }

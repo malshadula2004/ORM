@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 
 public class MainFormController {
@@ -30,6 +31,15 @@ public class MainFormController {
     private JFXButton btnView;
 
     @FXML
+    private JFXButton btnInstructor;
+
+    @FXML
+    private JFXButton btnPayment;
+
+    @FXML
+    private JFXButton btnLessons;
+
+    @FXML
     private AnchorPane changeForm;
 
     @FXML
@@ -37,66 +47,52 @@ public class MainFormController {
 
     public void initialize() {
         try {
+            // Default load dashboard
             changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/dashboard.fxml")));
+            highlightButton(btnDashboard);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
     @FXML
     void btnDashboardOnAction(ActionEvent event) {
-        try {
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/dashboard.fxml")));
-            defaultDesignButton();
-            changeDesignButton(btnDashboard);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadForm("/dashboard.fxml", btnDashboard);
     }
 
     @FXML
     void btnProgramOnAction(ActionEvent event) {
-        try {
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/programForm.fxml")));
-            defaultDesignButton();
-            changeDesignButton(btnProgram);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    void btnSettingOnAction(ActionEvent event) {
-        try {
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/settingForm.fxml")));
-            defaultDesignButton();
-            changeDesignButton(btnSetting);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadForm("/programForm.fxml", btnProgram);
     }
 
     @FXML
     void btnStudentOnAction(ActionEvent event) {
-        try {
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/studentForm.fxml")));
-            defaultDesignButton();
-            changeDesignButton(btnStudent);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadForm("/studentForm.fxml", btnStudent);
     }
 
     @FXML
     void btnViewOnAction(ActionEvent event) {
-        try {
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/viewAllForm.fxml")));
-            defaultDesignButton();
-            changeDesignButton(btnView);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadForm("/viewAllForm.fxml", btnView);
+    }
+
+    @FXML
+    void btnSettingOnAction(ActionEvent event) {
+        loadForm("/settingForm.fxml", btnSetting);
+    }
+
+    @FXML
+    void btnInstructorOnAction(ActionEvent event) {
+        loadForm("/instructorForm.fxml", btnInstructor);
+    }
+
+    @FXML
+    void btnPaymentOnAction(ActionEvent event) {
+        loadForm("/paymentForm.fxml", btnPayment);
+    }
+
+    @FXML
+    void btnLessonsOnAction(ActionEvent event) {
+        loadForm("/lessonsForm.fxml", btnLessons);
     }
 
     @FXML
@@ -112,17 +108,32 @@ public class MainFormController {
         }
     }
 
-    private void changeDesignButton(JFXButton button){
-        button.setStyle("-fx-background-color:  #CA762B; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 3; -fx-border-radius: 5; -fx-background-radius: 10;");
+    /** Utility method to load forms & highlight active button */
+    private void loadForm(String fxmlPath, JFXButton activeButton) {
+        try {
+            changeForm.getChildren().setAll((Node) FXMLLoader.load(getClass().getResource(fxmlPath)));
+            resetButtonStyles();
+            highlightButton(activeButton);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void defaultDesignButton(){
-        String style = "-fx-background-color: #E2A76F; -fx-text-fill: #000000; -fx-border-color: #FFFFFF; -fx-border-width: 3; -fx-border-radius: 5; -fx-background-radius: 10;";
+    private void highlightButton(JFXButton button){
+        button.setStyle("-fx-background-color: #468A9A; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 3; -fx-border-radius: 5; -fx-background-radius: 10;");
+    }
+
+    private void resetButtonStyles(){
+        String style = "-fx-background-color: #26667F; -fx-text-fill: #000000; -fx-border-color: #FFFFFF; -fx-border-width: 3; -fx-border-radius: 5; -fx-background-radius: 10;";
         btnDashboard.setStyle(style);
         btnProgram.setStyle(style);
-        btnSetting.setStyle(style);
         btnStudent.setStyle(style);
         btnView.setStyle(style);
+        btnSetting.setStyle(style);
+        btnInstructor.setStyle(style);
+        btnPayment.setStyle(style);
+        btnLessons.setStyle(style);
     }
+
 
 }

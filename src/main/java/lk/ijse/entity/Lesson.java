@@ -14,13 +14,16 @@ public class Lesson {
     @Id
     private String lessonId;
 
+
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
+
     @ManyToOne
     @JoinColumn(name = "course_id")
-    private Course course;
+    private course course;
+
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
@@ -30,5 +33,5 @@ public class Lesson {
     private Timestamp lessonDate;
 
     @Column(nullable = false)
-    private int duration; // duration in hours
+    private int duration;
 }

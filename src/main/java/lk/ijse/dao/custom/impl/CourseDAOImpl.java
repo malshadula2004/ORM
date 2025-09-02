@@ -1,110 +1,101 @@
 package lk.ijse.dao.custom.impl;
 
-import lk.ijse.dao.custom.CulinaryProgramDAO;
+import lk.ijse.dao.custom.CourseDAO;
 import lk.ijse.db.FactoryConfiguration;
-import lk.ijse.entity.CulinaryProgram;
+import lk.ijse.dto.courseDTO;
+import lk.ijse.entity.course;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class CulinaryProgramDAOImpl implements CulinaryProgramDAO {
+public class CourseDAOImpl implements CourseDAO {
 
     @Override
-    public void saveCulinaryProgram(CulinaryProgram culinaryProgram) {
+    public void saveCulinaryProgram(course culinaryProgram) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
         session.save(culinaryProgram);
-
         transaction.commit();
         session.close();
     }
 
     @Override
-    public void deleteCulinaryProgram(CulinaryProgram culinaryProgram) {
+    public void deleteCulinaryProgram(course culinaryProgram) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
         session.delete(culinaryProgram);
-
         transaction.commit();
         session.close();
     }
 
     @Override
-    public void updateCulinaryProgram(CulinaryProgram culinaryProgram) {
+    public void updateCulinaryProgram(course culinaryProgram) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
         session.update(culinaryProgram);
-
         transaction.commit();
         session.close();
     }
 
     @Override
-    public List<CulinaryProgram> getAllCulinaryProgram() {
-        List<CulinaryProgram> culinaryPrograms;
+    public List<course> getAllCulinaryProgram() {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
-        culinaryPrograms = session.createQuery("from CulinaryProgram", CulinaryProgram.class).list();
-
+        List<course> list = session.createQuery("from course ", course.class).list();
         transaction.commit();
         session.close();
-
-        return culinaryPrograms;
+        return list;
     }
 
     @Override
-    public CulinaryProgram getProgramsCheckName(String programName){
-        CulinaryProgram culinaryPrograms = null;
-
+    public courseDTO getProgramsCheckName(String programName){
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
-        String hql = "FROM CulinaryProgram c WHERE c.programName = :programName";
-        Query<CulinaryProgram> query = session.createQuery(hql, CulinaryProgram.class);
+        Query<course>    query = session.createQuery("FROM course c WHERE c.programName = :programName", course.class);
         query.setParameter("programName", programName);
-
-        culinaryPrograms = query.uniqueResult();
-
+        course result = query.uniqueResult();
         transaction.commit();
         session.close();
-
-        return culinaryPrograms;
+        return (courseDTO) result;
     }
 
     @Override
-    public CulinaryProgram getCulinaryProgram(String programId){
-        CulinaryProgram culinaryProgram = null;
+    public course getCulinaryProgram(String programId){
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
-        culinaryProgram = session.get(CulinaryProgram.class, programId);
-
+        course program = session.get(course.class, programId);
         transaction.commit();
         session.close();
-
-        return culinaryProgram;
+        return program;
     }
 
     @Override
     public Long getCulinaryProgramCount(){
-        Long count = 0L;
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
+        Long count = session.createQuery("SELECT COUNT(c) FROM course c", Long.class).uniqueResult();
+        transaction.commit();
+        session.close();
+        return count;
+    }
 
-        String hql = "SELECT COUNT(c) FROM CulinaryProgram c";
-        Query<Long> query = session.createQuery(hql, Long.class);
-
-        count = query.uniqueResult();
-
+    @Override
+    public String generateProgramId() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        String lastId = (String) session.createQuery("SELECT c.programId FROM course c ORDER BY c.programId DESC")
+                .setMaxResults(1)
+                .uniqueResult();
         transaction.commit();
         session.close();
 
-        return count;
+        if (lastId != null) {
+            int newId = Integer.parseInt(lastId.replace("P", "")) + 1;
+            return String.format("P%03d", newId);
+        } else {
+            return "P001";
+        }
     }
 }

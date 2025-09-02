@@ -12,14 +12,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.ViewAllBO;
-import lk.ijse.dto.CulinaryProgramDTO;
-import lk.ijse.entity.Enrollment;
+import lk.ijse.dto.courseDTO;
+import lk.ijse.entity.Payment;
 import lk.ijse.entity.Student;
 import lk.ijse.tdm.StudentTm;
 import lk.ijse.tdm.ViewAllTm;
 
 import java.io.IOException;
 import java.util.List;
+
+//import static com.sun.java.swing.ui.CommonUI.createButton;
 
 public class ViewAllFormController {
 
@@ -84,57 +86,57 @@ public class ViewAllFormController {
 
         for (Object[] objects : allEqualByProgramName) {
             Student student = (Student) objects[0];
-            Enrollment enrollment = (Enrollment) objects[1];
-            viewAllTms.add(new ViewAllTm(student.getStudentId(),student.getName(),student.getRegistrationDate(),enrollment.getFirstInstallment(),enrollment.getBalance(),createButton()));
+            Payment enrollment = (Payment) objects[1];
+            viewAllTms.add(new ViewAllTm(student.getStudentId(),student.getName(),student.getRegistrationDate(),enrollment.getPaymentDate(), (int) enrollment.getAmount(),null));
         }
         viewTbl.setItems(viewAllTms);
         lblStudentCount.setText(String.valueOf(allEqualByProgramName.size()));
     }
 
-    private Button createButton(){
-        Button button = new Button("Pay");
-        button.setStyle("-fx-background-color: blue;-fx-text-fill: white;");
-
-        button.setOnAction((e) -> {
-            ViewAllTm selectedItem = viewTbl.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                loadAddPaymentForm(selectedItem,selectPrgramChoiceBox.getValue().trim());
-                viewTbl.getSelectionModel().clearSelection();
-            } else {
-                // Show an alert if no item is selected
-                new Alert(Alert.AlertType.INFORMATION, "Select a row before clicking the button!").show();
-            }
-        });
-
-        return button;
-    }
-
-    private void loadAddPaymentForm(ViewAllTm selectedItem, String programName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPaymentForm.fxml"));
-            Scene scene = new Scene(loader.load());
-
-            // Get the controller for addProgramForm
-            AddPaymentFormController controller = loader.getController();
-
-            // Pass the selected student to the new form
-            controller.initialize(selectedItem,programName);
-
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private Button createButton(){
+//        Button button = new Button("Pay");
+//        button.setStyle("-fx-background-color: blue;-fx-text-fill: white;");
+//
+//        button.setOnAction((e) -> {
+//            ViewAllTm selectedItem = viewTbl.getSelectionModel().getSelectedItem();
+//            if (selectedItem != null) {
+//                loadAddPaymentForm(selectedItem,selectPrgramChoiceBox.getValue().trim());
+//                viewTbl.getSelectionModel().clearSelection();
+//            } else {
+//                // Show an alert if no item is selected
+//                new Alert(Alert.AlertType.INFORMATION, "Select a row before clicking the button!").show();
+//            }
+//        });
+//
+//        return button;
+//    }
+//
+//    private void loadAddPaymentForm(ViewAllTm selectedItem, String programName) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPaymentForm.fxml"));
+//            Scene scene = new Scene(loader.load());
+//
+//            // Get the controller for addProgramForm
+//            AddPaymentFormController controller = loader.getController();
+//
+//            // Pass the selected student to the new form
+//            controller.initialize(selectedItem,programName);
+//
+//            Stage stage = new Stage();
+//            stage.setScene(scene);
+//            stage.centerOnScreen();
+//            stage.initStyle(StageStyle.UNDECORATED);
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     private void setChoiceBoxData(){
-        List<CulinaryProgramDTO> program = viewAllBO.getAllCulinaryProgram();
+        List<courseDTO> program = viewAllBO.getAllCulinaryProgram();
         ObservableList<String> programNames = FXCollections.observableArrayList();
 
-        for (CulinaryProgramDTO programDTO : program){
+        for (courseDTO programDTO : program){
             programNames.add(programDTO.getProgramName());
         }
         selectPrgramChoiceBox.setItems(programNames);

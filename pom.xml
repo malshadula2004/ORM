@@ -50,6 +50,8 @@
             <scope>provided</scope>
         </dependency>
 
+
+
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>

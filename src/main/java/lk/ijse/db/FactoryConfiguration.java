@@ -1,14 +1,17 @@
 package lk.ijse.db;
 
-import lk.ijse.entity.CulinaryProgram;
-import lk.ijse.entity.Enrollment;
+import lk.ijse.entity.course;
+import lk.ijse.entity.Payment;
 import lk.ijse.entity.Student;
 import lk.ijse.entity.User;
 import lk.ijse.entity.Instructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import lk.ijse.entity.Course;
+
+import lk.ijse.entity.Lesson;
+import lk.ijse.entity.Payment;
+import lk.ijse.entity.Instructor;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -26,9 +29,12 @@ public class FactoryConfiguration {
             Configuration configuration = new Configuration();
             configuration.setProperties(properties)
                     .addAnnotatedClass(User.class)
-                    .addAnnotatedClass(CulinaryProgram.class)
-                    .addAnnotatedClass(Enrollment.class)
-                    .addAnnotatedClass(Course.class)
+                    .addAnnotatedClass(course.class)
+
+
+                    .addAnnotatedClass(Instructor.class)
+                    .addAnnotatedClass(Lesson.class)
+                    .addAnnotatedClass(Payment.class)
                     .addAnnotatedClass(Student.class);
 
 
@@ -36,7 +42,7 @@ public class FactoryConfiguration {
             sessionFactory = configuration.buildSessionFactory();
             System.out.println("Hibernate SessionFactory created successfully, DB should be ready!");
         } catch (Exception e) {
-            e.printStackTrace(); // error log print වෙනවා
+            e.printStackTrace();
             throw new RuntimeException("Hibernate configuration failed", e);
         }
     }

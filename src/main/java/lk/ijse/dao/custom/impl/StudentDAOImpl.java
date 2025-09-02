@@ -2,7 +2,7 @@ package lk.ijse.dao.custom.impl;
 
 import lk.ijse.dao.custom.StudentDAO;
 import lk.ijse.db.FactoryConfiguration;
-import lk.ijse.entity.CulinaryProgram;
+import lk.ijse.entity.course;
 import lk.ijse.entity.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

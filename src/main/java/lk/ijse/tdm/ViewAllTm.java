@@ -14,7 +14,7 @@ public class ViewAllTm {
     private String studentId;
     private String studentName;
     private Date registerDate;
-    private double installment;
-    private double balance;
+    private Date installment;
+    private int balance;
     private Button payment;
 }

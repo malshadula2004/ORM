@@ -26,4 +26,10 @@ public class Payment {
 
     @Column(nullable = false)
     private String status; // COMPLETED, PENDING, FAILEDD
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "programId")
+    private course program;
 }

@@ -21,7 +21,7 @@ public class Instructor {
     private String specialization;
 
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
-    private List<Course> courses;
+    private List<course> courses;
 
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     private List<Lesson> lessons;

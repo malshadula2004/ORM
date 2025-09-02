@@ -37,21 +37,13 @@
             <TableColumn fx:id="colAddress" prefWidth="148.0" text="Address" />
             <TableColumn fx:id="colTel" prefWidth="110.0" text="Tel" />
             <TableColumn fx:id="colRegisterDate" prefWidth="112.0" text="Register Date" />
-            <TableColumn fx:id="colProgram" prefWidth="77.0" text="Programs" />
+
         </columns>
       </TableView>
       <Pane fx:id="visiblePane" layoutX="368.0" layoutY="188.0" prefHeight="108.0" prefWidth="345.0">
          <children>
-              <Label layoutX="17.0" layoutY="14.0" prefHeight="16.0" prefWidth="79.0" text="Programs : ">
-               <font>
-                  <Font name="DejaVu Sans Condensed Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="17.0" layoutY="73.0" prefHeight="16.0" prefWidth="129.0" text="1 st Installment:  : ">
-               <font>
-                  <Font name="DejaVu Sans Condensed Bold" size="13.0" />
-               </font>
-            </Label>
+
+
          </children>
       </Pane>
       <Label layoutX="57.0" layoutY="142.0" text="ID :">

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="signUpForm" prefHeight="296.0" prefWidth="344.0" style="-fx-background-color: #CA762B;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.SignUpFormController">
+<AnchorPane fx:id="signUpForm" prefHeight="296.0" prefWidth="344.0" style="-fx-background-image: BBDCE5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.SignUpFormController">
    <children>
       <TextField fx:id="inputUserName" layoutX="53.0" layoutY="95.0" onAction="#inputUserNameOnAction" prefHeight="32.0" prefWidth="239.0" promptText="User Name" style="-fx-background-radius: 10;" />
       <Label layoutX="102.0" layoutY="23.0" text="Sign Up">
@@ -27,7 +27,7 @@
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></CheckBox>
-      <CheckBox fx:id="admissionCheckBox" layoutX="131.0" layoutY="209.0" mnemonicParsing="false" onAction="#admissionCheckBoxOnAction" text="Admissions Coordinator">
+      <CheckBox fx:id="admissionCheckBox" layoutX="131.0" layoutY="209.0" mnemonicParsing="false" onAction="#admissionCheckBoxOnAction" text="Receptionist">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></CheckBox>
