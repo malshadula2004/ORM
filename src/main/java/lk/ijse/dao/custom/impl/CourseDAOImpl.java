@@ -43,26 +43,39 @@ public class CourseDAOImpl implements CourseDAO {
     public List<course> getAllCulinaryProgram() {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        List<course> list = session.createQuery("from course ", course.class).list();
+        List<course> list = session.createQuery("from course", course.class).list();
         transaction.commit();
         session.close();
         return list;
     }
 
     @Override
-    public courseDTO getProgramsCheckName(String programName){
+    public courseDTO getProgramsCheckName(String programName) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        Query<course>    query = session.createQuery("FROM course c WHERE c.programName = :programName", course.class);
+
+        Query<course> query = session.createQuery("FROM course c WHERE c.programName = :programName", course.class);
         query.setParameter("programName", programName);
         course result = query.uniqueResult();
+
         transaction.commit();
         session.close();
-        return (courseDTO) result;
+
+        if (result != null) {
+
+            return new courseDTO(
+                    result.getProgramId(),
+                    result.getProgramName(),
+                    result.getDuration(),
+                    result.getFee()
+            );
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public course getCulinaryProgram(String programId){
+    public course getCulinaryProgram(String programId) {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         course program = session.get(course.class, programId);
@@ -72,7 +85,7 @@ public class CourseDAOImpl implements CourseDAO {
     }
 
     @Override
-    public Long getCulinaryProgramCount(){
+    public Long getCulinaryProgramCount() {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         Long count = session.createQuery("SELECT COUNT(c) FROM course c", Long.class).uniqueResult();
@@ -85,9 +98,11 @@ public class CourseDAOImpl implements CourseDAO {
     public String generateProgramId() {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
+
         String lastId = (String) session.createQuery("SELECT c.programId FROM course c ORDER BY c.programId DESC")
                 .setMaxResults(1)
                 .uniqueResult();
+
         transaction.commit();
         session.close();
 
@@ -97,5 +112,21 @@ public class CourseDAOImpl implements CourseDAO {
         } else {
             return "P001";
         }
+    }
+
+    @Override
+    public course findById(String id) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        course c = session.get(course.class, id);
+        session.close();
+        return c;
+    }
+
+    @Override
+    public List<course> findAll() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        List<course> courses = session.createQuery("FROM course", course.class).list();
+        session.close();
+        return courses;
     }
 }

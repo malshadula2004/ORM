@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="lk.ijse.controller.PaymentFormController"
+            prefWidth="600" prefHeight="400">
+
+    <children>
+        <VBox spacing="15" alignment="TOP_CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+              AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+
+            <Label text="Payment Management" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <GridPane hgap="10" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" minWidth="150"/>
+                    <ColumnConstraints minWidth="300"/>
+                </columnConstraints>
+
+                <!-- Payment ID -->
+                <Label text="Payment ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtPaymentId" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <!-- Student -->
+                <Label text="Student:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cmbStudent" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250"/>
+
+                <!-- Course/Program -->
+                <Label text="Program:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cmbProgram" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="250"/>
+
+                <!-- Amount -->
+                <Label text="Amount:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtAmount" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <!-- Payment Date -->
+                <Label text="Payment Date:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="dpPaymentDate" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <!-- Status -->
+                <Label text="Status:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cmbStatus" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="250"/>
+            </GridPane>
+
+            <!-- Action Buttons -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="💳 Make Payment" fx:id="btnMakePayment" onAction="#btnMakePaymentOnAction"/>
+                <Button text="❌ Cancel" fx:id="btnCancel" onAction="#btnCancelOnAction"/>
+            </HBox>
+
+
+        </VBox>
+    </children>
+</AnchorPane>

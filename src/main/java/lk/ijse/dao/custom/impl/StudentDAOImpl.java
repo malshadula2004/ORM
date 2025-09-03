@@ -88,4 +88,21 @@ public class StudentDAOImpl implements StudentDAO {
 
         return count;
     }
+
+    @Override
+    public Student findById(String id) {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Student student = session.get(Student.class, id);
+        session.close();
+        return student;
+    }
+
+    @Override
+    public List<Student> findAll() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        List<Student> students = session.createQuery("FROM Student", Student.class).list();
+        session.close();
+        return students;
+    }
 }
+

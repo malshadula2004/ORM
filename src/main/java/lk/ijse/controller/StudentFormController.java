@@ -4,17 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.StudentBO;
 import lk.ijse.dto.StudentDTO;
 import lk.ijse.tdm.StudentTm;
 import lk.ijse.util.Regex;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -126,10 +131,26 @@ public class StudentFormController {
             studentBO.saveStudent(getObject());
             clearData();
             loadAllStudent();
+
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/paymentForm.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("Payment Form");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Failed to open Payment Form!").show();
+            }
+
         } else {
             new Alert(Alert.AlertType.WARNING, "Please Enter All Fields !!").show();
         }
     }
+
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {

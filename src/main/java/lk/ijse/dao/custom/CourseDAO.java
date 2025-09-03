@@ -16,4 +16,6 @@ public interface CourseDAO extends SuperDAO {
     Long getCulinaryProgramCount();
 
     String generateProgramId(); // new
+    course findById(String id);
+    List<course> findAll();
 }
