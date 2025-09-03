@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.ComboBox?>
+
+<AnchorPane fx:id="lessonForm" prefHeight="630.0" prefWidth="770.0"
+            style="-fx-background-color: #FFE5B4;"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="lk.ijse.controller.LessonFormController">
+
+    <children>
+        <!-- Header -->
+        <HBox layoutX="40.0" layoutY="30.0" spacing="15.0">
+            <children>
+                <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@assets/lesson.png"/>
+                    </image>
+                </ImageView>
+
+                <Label text="Lesson Manage">
+                    <font>
+                        <Font name="DejaVu Serif Condensed Bold" size="30.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Input Fields -->
+        <VBox layoutX="57.0" layoutY="120.0" spacing="15.0">
+            <children>
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Lesson ID :" prefWidth="100.0"/>
+                        <TextField fx:id="txtLessonId" prefWidth="200.0" editable="false"/>
+                        <Label text="Lesson Date :" prefWidth="130.0"/>
+                        <DatePicker fx:id="dateLesson"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Student :" prefWidth="100.0"/>
+                        <ComboBox fx:id="cmbStudent" prefWidth="200.0"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Course :" prefWidth="100.0"/>
+                        <ComboBox fx:id="cmbCourse" prefWidth="200.0"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Instructor :" prefWidth="100.0"/>
+                        <ComboBox fx:id="cmbInstructor" prefWidth="200.0"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Time :" prefWidth="100.0"/>
+                        <TextField fx:id="txtTime" promptText="HH:mm:ss" prefWidth="200.0"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Duration :" prefWidth="100.0"/>
+                        <TextField fx:id="txtDuration" promptText="Minutes (e.g. 90)" prefWidth="200.0"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Buttons -->
+        <HBox layoutX="320.0" layoutY="360.0" spacing="20.0">
+            <children>
+                <JFXButton text="Clear" fx:id="btnClear" onAction="#btnClearOnAction"
+                           prefWidth="85.0" style="-fx-background-color: #808080;" textFill="WHITE"/>
+                <JFXButton text="Update" fx:id="btnUpdate" onAction="#btnUpdateOnAction"
+                           prefWidth="85.0" style="-fx-background-color: #1F45FC;" textFill="WHITE"/>
+                <JFXButton text="Delete" fx:id="btnDelete" onAction="#btnDeleteOnAction"
+                           prefWidth="85.0" style="-fx-background-color: #E41B17;" textFill="WHITE"/>
+                <JFXButton text="Save" fx:id="btnSave" onAction="#btnSaveOnAction"
+                           prefWidth="85.0" style="-fx-background-color: #228B22;" textFill="WHITE"/>
+            </children>
+        </HBox>
+
+        <!-- Table -->
+        <TableView fx:id="tblLesson" layoutX="57.0" layoutY="420.0"
+                   onMouseClicked="#tblLessonOnClickAction"
+                   prefHeight="180.0" prefWidth="656.0">
+            <columns>
+                <TableColumn fx:id="colLessonId" text="Lesson ID" prefWidth="100.0"/>
+                <TableColumn fx:id="colStudent" text="Student" prefWidth="120.0"/>
+                <TableColumn fx:id="colCourse" text="Course" prefWidth="120.0"/>
+                <TableColumn fx:id="colInstructor" text="Instructor" prefWidth="120.0"/>
+                <TableColumn fx:id="colDate" text="Date" prefWidth="100.0"/>
+                <TableColumn fx:id="colTime" text="Time" prefWidth="80.0"/>
+                <TableColumn fx:id="colDuration" text="Duration" prefWidth="100.0"/>
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

@@ -25,7 +25,7 @@ public class Student {
     private Date registrationDate;
     private int someInt;
 
-    // 🔹 Many-to-Many relationship with Course
+
     @ManyToMany
     @JoinTable(
             name = "student_course",
@@ -34,11 +34,12 @@ public class Student {
     )
     private List<course> courses = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Payment> payments = new ArrayList<>();
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lessons = new ArrayList<>();
+
 
     public Student(String studentId, String name, String address, Long tel, Date registrationDate) {
         this.studentId = studentId;
@@ -48,7 +49,20 @@ public class Student {
         this.registrationDate = registrationDate;
         this.someInt = 0;
         this.courses = new ArrayList<>();
-
         this.lessons = new ArrayList<>();
+        this.payments = new ArrayList<>();
+    }
+
+
+    public Student(String studentId) {
+        this.studentId = studentId;
+        this.name = "";
+        this.address = "";
+        this.tel = 0L;
+        this.registrationDate = new Date(System.currentTimeMillis());
+        this.someInt = 0;
+        this.courses = new ArrayList<>();
+        this.lessons = new ArrayList<>();
+        this.payments = new ArrayList<>();
     }
 }

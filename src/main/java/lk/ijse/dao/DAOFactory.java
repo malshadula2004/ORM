@@ -5,7 +5,7 @@ import lk.ijse.dao.custom.impl.*;
 public class DAOFactory {
 
     public enum DAOType{
-        PROGRAM,STUDENT,QUERY,ENROLLMENT,USER,COURSE,INSTRUCTOR
+        PROGRAM,STUDENT,QUERY,ENROLLMENT,USER,COURSE,INSTRUCTOR,LESSON
     }
 
     public static SuperDAO getDAO(DAOType daoType){
@@ -16,6 +16,7 @@ public class DAOFactory {
             case INSTRUCTOR -> new InstructorDAOImpl();
             case USER -> new UserDAOImpl();
             case COURSE -> new CourseDAOImpl();
+            case LESSON -> new LessonDAOImpl();
             default -> null;
         };
     }

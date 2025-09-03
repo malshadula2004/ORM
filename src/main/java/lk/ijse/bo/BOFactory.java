@@ -5,7 +5,7 @@ import lk.ijse.bo.custom.impl.*;
 public class BOFactory {
 
     public enum BOType{
-        PROGRAM, STUDENT, DASHBOARD, ADDPROGRAM, VIEWALL, ADDPAYMENT, SIGNUP, LOGIN, SETTING,COURSE,INSTRUCTOR
+    PROGRAM, STUDENT, DASHBOARD, ADDPROGRAM, VIEWALL, ADDPAYMENT, SIGNUP, LOGIN, SETTING,COURSE,INSTRUCTOR,LESSON
     }
 
     public static SuperBO getBO(BOType boType){
@@ -15,7 +15,7 @@ public class BOFactory {
             case DASHBOARD -> new DashboardBOImpl();
             case INSTRUCTOR -> new InstructorBOImpl();
             case VIEWALL -> new ViewAllBOImpl();
-
+            case LESSON -> new LessonBOImpl();
             case SIGNUP -> new SignUpBOImpl();
             case LOGIN -> new LoginBOImpl();
             case SETTING -> new SettingBOImpl();

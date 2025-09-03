@@ -92,7 +92,7 @@ public class MainFormController {
 
     @FXML
     void btnLessonsOnAction(ActionEvent event) {
-        loadForm("/lessonsForm.fxml", btnLessons);
+        loadForm("/lessonForm.fxml", btnLessons);
     }
 
     @FXML

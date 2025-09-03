@@ -28,7 +28,6 @@ public class course {
     @Column(nullable = false)
     private double fee;
 
-
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
 
@@ -39,11 +38,22 @@ public class course {
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-
+    // Existing constructor
     public course(String programId, String programName, int duration, double fee) {
         this.programId = programId;
         this.programName = programName;
         this.duration = duration;
         this.fee = fee;
+    }
+
+
+    public course(String programId) {
+        this.programId = programId;
+        this.programName = "";
+        this.duration = 0;
+        this.fee = 0.0;
+        this.students = new ArrayList<>();
+        this.lessons = new ArrayList<>();
+        this.instructor = null;
     }
 }
