@@ -68,20 +68,24 @@ public class PaymentBOImpl implements PaymentBO {
                 .collect(Collectors.toList());
     }
 
-    // Mapping DTO ↔ Entity
+
     private Payment toEntity(PaymentDTO dto) {
         Student student = new Student(dto.getStudentId());
         course program = new course(dto.getProgramId());
+
+        java.sql.Date paymentDate = java.sql.Date.valueOf(dto.getPaymentDate());
 
         return new Payment(
                 dto.getPaymentId(),
                 student,
                 dto.getAmount(),
-                dto.getPaymentDate(),
+                paymentDate,
                 dto.getStatus(),
                 program
         );
     }
+
+
 
     private PaymentDTO toDTO(Payment entity) {
         return new PaymentDTO(
@@ -89,8 +93,20 @@ public class PaymentBOImpl implements PaymentBO {
                 entity.getStudent().getStudentId(),
                 entity.getProgram().getProgramId(),
                 entity.getAmount(),
-                entity.getPaymentDate(),
+                entity.getPaymentDate().toString(),
                 entity.getStatus()
         );
+
+    }
+
+    @Override
+    public boolean updateStatus(String paymentId, String newStatus) throws Exception {
+        assert paymentDAO != null;
+        Payment payment = paymentDAO.findById(paymentId); // find by ID
+        if (payment != null) {
+            payment.setStatus(newStatus);
+            return paymentDAO.update(payment); // save updated status
+        }
+        return false;
     }
 }

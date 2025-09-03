@@ -52,9 +52,10 @@ public class PaymentFormController {
                 cmbStudent.getValue(),
                 cmbProgram.getValue(),
                 Double.parseDouble(txtAmount.getText()),
-                Date.valueOf(dpPaymentDate.getValue()),
+                dpPaymentDate.getValue() != null ? dpPaymentDate.getValue().toString() : null, // <-- මෙය
                 cmbStatus.getValue()
         );
+
 
         if (paymentBO.savePayment(dto)) {
             new Alert(Alert.AlertType.INFORMATION, "Payment Saved Successfully!").show();

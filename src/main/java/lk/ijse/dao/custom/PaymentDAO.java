@@ -12,4 +12,6 @@ public interface PaymentDAO extends SuperDAO {
     Payment findById(String id);
     List<Payment> findAll();
     String generatePaymentId();
+
+
 }
