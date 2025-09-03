@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="instructorForm" prefHeight="630.0" prefWidth="770.0" style="-fx-background-color: #E6F2FF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.InstructorFormController">
+    <children>
+        <Label layoutX="113.0" layoutY="46.0" text="Instructor Manage">
+            <font>
+                <Font name="DejaVu Serif Condensed Bold" size="30.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@asset/icon/icons8-teacher-48.png" />
+            </image>
+        </ImageView>
+
+        <!-- Input Fields -->
+        <Label layoutX="57.0" layoutY="142.0" text="ID :" />
+        <TextField fx:id="txtInstructorId" layoutX="128.0" layoutY="138.0" />
+
+        <Label layoutX="57.0" layoutY="199.0" text="Name :" />
+        <TextField fx:id="txtName" layoutX="128.0" layoutY="195.0" />
+
+        <Label layoutX="57.0" layoutY="252.0" text="Specialization :" />
+        <TextField fx:id="txtSpecialization" layoutX="128.0" layoutY="248.0" />
+
+        <!-- Table -->
+        <TableView fx:id="tblInstructor" layoutX="57.0" layoutY="410.0" prefHeight="200.0" prefWidth="656.0" onMouseClicked="#tblInstructorOnClickAction">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="120.0" text="ID" />
+                <TableColumn fx:id="colName" prefWidth="200.0" text="Name" />
+                <TableColumn fx:id="colSpecialization" prefWidth="200.0" text="Specialization" />
+            </columns>
+        </TableView>
+
+        <!-- Buttons -->
+        <JFXButton layoutX="627.0" layoutY="361.0" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #228B22;" text="Save" textFill="WHITE" />
+        <JFXButton layoutX="527.0" layoutY="361.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #E41B17;" text="Delete" textFill="WHITE" />
+        <JFXButton layoutX="427.0" layoutY="361.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #1F45FC;" text="Update" textFill="WHITE" />
+        <JFXButton layoutX="327.0" layoutY="361.0" onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #808080;" text="Clear" textFill="WHITE" />
+
+    </children>
+</AnchorPane>

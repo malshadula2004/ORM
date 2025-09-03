@@ -12,6 +12,7 @@ import java.util.List;
 public class Instructor {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String instructorId;
 
     @Column(nullable = false)
