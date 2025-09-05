@@ -28,7 +28,7 @@
             <PasswordField fx:id="inputPassword" layoutX="59.0" layoutY="149.0" onAction="#inputPasswordOnAction" prefHeight="32.0" prefWidth="239.0" promptText="Password" style="-fx-background-radius: 10;" />
             <Button layoutX="116.0" layoutY="208.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="32.0" prefWidth="127.0" style="-fx-background-color: #3B2F2F;" text="LOGIN" textFill="WHITE" />
             <Text layoutX="60.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account?" />
-            <Text layoutX="221.0" layoutY="269.0" onMouseClicked="#goToSignUpOnAction" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" underline="true">
+            <Text fill="#0015ff" layoutX="221.0" layoutY="269.0" onMouseClicked="#goToSignUpOnAction" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Up" underline="true">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

@@ -5,12 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.InstructorBO;
 import lk.ijse.dto.InstructorDTO;
 
 public class InstructorFormController {
 
+    public TextField txtSearch;
     @FXML
     private TextField txtInstructorId;
     @FXML
@@ -114,4 +116,24 @@ public class InstructorFormController {
         txtSpecialization.clear();
         txtInstructorId.setText(instructorBO.generateNewId());
     }
+
+    @FXML
+    public void txtSearchKeyReleased(KeyEvent keyEvent) {
+        String searchText = txtSearch.getText().toLowerCase(); // search text
+
+
+        ObservableList<InstructorDTO> allInstructors = FXCollections.observableArrayList(instructorBO.getAllInstructors());
+
+        ObservableList<InstructorDTO> filteredList = FXCollections.observableArrayList();
+
+        for (InstructorDTO dto : allInstructors) {
+            if (dto.getInstructorId().toLowerCase().contains(searchText) ||
+                    dto.getName().toLowerCase().contains(searchText)) {
+                filteredList.add(dto);
+            }
+        }
+
+        tblInstructor.setItems(filteredList);
+    }
+
 }

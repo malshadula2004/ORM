@@ -48,7 +48,7 @@ public class MainFormController {
     public void initialize() {
         try {
             // Default load dashboard
-            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/dashboard.fxml")));
+            changeForm.getChildren().setAll((Node) FXMLLoader.load(this.getClass().getResource("/loginForm2.fxml")));
             highlightButton(btnDashboard);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,7 +57,7 @@ public class MainFormController {
 
     @FXML
     void btnDashboardOnAction(ActionEvent event) {
-        loadForm("/dashboard.fxml", btnDashboard);
+        loadForm("/loginForm2.fxml", btnDashboard);
     }
 
     @FXML
@@ -87,7 +87,7 @@ public class MainFormController {
 
     @FXML
     void btnPaymentOnAction(ActionEvent event) {
-        loadForm("/paymentForm.fxml", btnPayment);
+        loadForm("/paymentTableForm.fxml", btnPayment);
     }
 
     @FXML
@@ -128,7 +128,7 @@ public class MainFormController {
         btnDashboard.setStyle(style);
         btnProgram.setStyle(style);
         btnStudent.setStyle(style);
-        btnView.setStyle(style);
+
         btnSetting.setStyle(style);
         btnInstructor.setStyle(style);
         btnPayment.setStyle(style);

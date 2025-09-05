@@ -16,13 +16,11 @@ public class StudentBOImpl implements StudentBO {
     @Override
     public void saveStudent(StudentDTO dto) {
         Student student = new Student(
-
                 dto.getStudentId(),
                 dto.getName(),
                 dto.getAddress(),
                 dto.getTel(),
                 dto.getRegistrationDate()
-
         );
         studentDAO.saveStudent(student);
     }
@@ -30,7 +28,6 @@ public class StudentBOImpl implements StudentBO {
     @Override
     public void updateStudent(StudentDTO dto) {
         Student student = new Student(
-
                 dto.getStudentId(),
                 dto.getName(),
                 dto.getAddress(),
@@ -55,6 +52,8 @@ public class StudentBOImpl implements StudentBO {
     @Override
     public StudentDTO getStudent(String studentId) {
         Student student = studentDAO.getStudent(studentId);
+        if (student == null) return null;
+
         return new StudentDTO(
                 student.getStudentId(),
                 student.getName(),
@@ -78,5 +77,10 @@ public class StudentBOImpl implements StudentBO {
             ));
         }
         return dtos;
+    }
+
+    @Override
+    public String generateNewId() {
+        return studentDAO.generateNewId();
     }
 }

@@ -21,13 +21,16 @@ import lk.ijse.db.FactoryConfiguration;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
 
 public class DashboardController {
 
     @FXML
-    public BarChart<String, Number> BarChartStu;
-    public Label lblIncom;
+    private BarChart<String, Number> BarChartStu;
+
+    @FXML
+    private Label lblIncom;
 
     @FXML
     private Label lblTotalInstructor;
@@ -45,13 +48,13 @@ public class DashboardController {
     private TableView<StudyAllStudentTm> tblStudyAll;
 
     @FXML
-    private TableColumn<?, ?> colDate;
+    private TableColumn<StudyAllStudentTm, String> colId;
 
     @FXML
-    private TableColumn<?, ?> colId;
+    private TableColumn<StudyAllStudentTm, String> colName;
 
     @FXML
-    private TableColumn<?, ?> colName;
+    private TableColumn<StudyAllStudentTm, String> colDate;
 
     @FXML
     private AnchorPane dashboardForm;
@@ -97,7 +100,7 @@ public class DashboardController {
 
     private void loadStudentChart() {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(" Student Registrations");
+        series.setName("Student Registrations");
 
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
@@ -109,7 +112,6 @@ public class DashboardController {
                                     "GROUP BY MONTH(s.registrationDate)", Object[].class)
                     .list();
 
-            // Only add months with registrations
             for (Object[] row : results) {
                 Integer month = ((Number) row[0]).intValue();
                 Integer count = ((Number) row[1]).intValue();
@@ -136,6 +138,9 @@ public class DashboardController {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
 
+        lblIncom.setOpacity(1);   // fully visible
+
+
         try {
             int currentMonth = LocalDate.now().getMonthValue();
             int currentYear = LocalDate.now().getYear();
@@ -149,7 +154,6 @@ public class DashboardController {
 
             if (totalIncome == null) totalIncome = 0.0;
 
-            // Format to 2 decimal places like 1234.00
             lblIncom.setText(String.format("%.2f", totalIncome));
 
             transaction.commit();
@@ -161,6 +165,4 @@ public class DashboardController {
             session.close();
         }
     }
-
-
 }

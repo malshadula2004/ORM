@@ -25,6 +25,7 @@ import java.util.List;
 
 public class StudentFormController {
 
+    public TextField txtSearch;
     @FXML
     private TableColumn<?, ?> colAddress;
 
@@ -66,6 +67,7 @@ public class StudentFormController {
     public void initialize() {
         setCellValueFactory();
         loadAllStudent();
+        generateStudentId();
     }
 
     private void loadAllStudent() {
@@ -210,4 +212,37 @@ public class StudentFormController {
 
     public void txtAddressOnAction(ActionEvent actionEvent) {
     }
+
+    @FXML
+    public void txtSearchKeyReleased(KeyEvent keyEvent) {
+        String searchText = txtSearch.getText().toLowerCase(); // search text
+
+        // Original list from DB
+        List<StudentDTO> allStudent = studentBO.getAllStudent();
+        ObservableList<StudentTm> filteredList = FXCollections.observableArrayList();
+
+        for (StudentDTO studentDTO : allStudent) {
+            if (studentDTO.getStudentId().toLowerCase().contains(searchText) ||
+                    studentDTO.getName().toLowerCase().contains(searchText)) {
+
+                filteredList.add(new StudentTm(
+                        studentDTO.getStudentId(),
+                        studentDTO.getName(),
+                        studentDTO.getAddress(),
+                        studentDTO.getTel(),
+                        studentDTO.getRegistrationDate(),
+                        null
+                ));
+            }
+        }
+
+        tblStudent.setItems(filteredList); // update TableView
+    }
+
+    private void generateStudentId() {
+        String newId = studentBO.generateNewId();
+        txtId.setText(newId);
+        txtId.setEditable(false);
+    }
+
 }

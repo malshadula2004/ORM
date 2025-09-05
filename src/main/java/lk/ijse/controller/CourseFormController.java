@@ -21,6 +21,7 @@ import java.util.List;
 
 public class CourseFormController {
 
+    public TextField txtSearch;
     @FXML
     private TableColumn<?, ?> colDuration;
     @FXML
@@ -169,4 +170,29 @@ public class CourseFormController {
 
     public void txtIdOnAction(ActionEvent actionEvent) {
     }
+
+    @FXML
+    public void txtSearchKeyReleased(KeyEvent keyEvent) {
+        String searchText = txtSearch.getText().toLowerCase(); // search text
+
+
+        List<courseDTO> allPrograms = programBO.getAllCulinaryProgram();
+        ObservableList<courseTM> filteredList = tblProgram.getItems();
+        filteredList.clear();
+
+        for (courseDTO program : allPrograms) {
+            if (program.getProgramId().toLowerCase().contains(searchText) ||
+                    program.getProgramName().toLowerCase().contains(searchText)) {
+
+                String duration = convertDurationToString(program.getDuration());
+                filteredList.add(new courseTM(program.getProgramId(),
+                        program.getProgramName(),
+                        duration,
+                        program.getFee()));
+            }
+        }
+
+        tblProgram.setItems(filteredList);
+    }
+
 }

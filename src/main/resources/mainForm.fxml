@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dashboardFrom" prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.MainForm2Controller">
+<AnchorPane fx:id="dashboardFrom" prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.MainFormController">
    <children>
       <AnchorPane fx:id="changeForm" layoutX="219.0" layoutY="10.0" prefHeight="630.0" prefWidth="770.0" style="-fx-background-color: #468A9A;" />
       <ImageView fitHeight="254.0" fitWidth="219.0" pickOnBounds="true" preserveRatio="true">

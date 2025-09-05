@@ -15,6 +15,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
+
     <dependencies>
         <!-- MySQL Connector -->
         <dependency>
@@ -34,6 +36,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>22</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>9.0.10</version> <!-- Use the version compatible with your JavaFX -->
+        </dependency>
+
 
         <!-- JFoenix for UI -->
         <dependency>

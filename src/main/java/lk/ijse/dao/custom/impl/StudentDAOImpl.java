@@ -126,5 +126,29 @@ public class StudentDAOImpl implements StudentDAO {
         session.close();
         return students;
     }
+
+    @Override
+    public String generateNewId() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+
+        String hql = "SELECT s.studentId FROM Student s ORDER BY s.studentId DESC";
+        Query<String> query = session.createQuery(hql, String.class);
+        query.setMaxResults(1);
+
+        String lastId = query.uniqueResult();
+
+        transaction.commit();
+        session.close();
+
+        if (lastId != null) {
+            int newId = Integer.parseInt(lastId.replace("S", "")) + 1;
+            return String.format("S%03d", newId); // S001, S002 ...
+        } else {
+            return "S001";
+        }
+    }
+
 }
 

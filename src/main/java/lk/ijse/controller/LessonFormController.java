@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.LessonBO;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class LessonFormController {
 
+    public TextField txtSearch;
     @FXML
     private TableView<LessonTm> tblLesson;
     @FXML
@@ -167,4 +169,34 @@ public class LessonFormController {
             txtDuration.setText(String.valueOf(selected.getDuration()));
         }
     }
+
+    @FXML
+    public void txtSearchKeyReleased(KeyEvent keyEvent) {
+        String searchText = txtSearch.getText().toLowerCase();
+
+
+        List<LessonDTO> allLesson = lessonBO.getAllLesson();
+        ObservableList<LessonTm> filteredList = FXCollections.observableArrayList();
+
+        for (LessonDTO dto : allLesson) {
+            if (dto.getLessonId().toLowerCase().contains(searchText) ||
+                    dto.getStudentId().toLowerCase().contains(searchText) ||
+                    dto.getCourseId().toLowerCase().contains(searchText) ||
+                    dto.getInstructorId().toLowerCase().contains(searchText)) {
+
+                filteredList.add(new LessonTm(
+                        dto.getLessonId(),
+                        dto.getStudentId(),
+                        dto.getCourseId(),
+                        dto.getInstructorId(),
+                        dto.getLessonDate(),
+                        dto.getLessonTime(),
+                        dto.getDuration()
+                ));
+            }
+        }
+
+        tblLesson.setItems(filteredList);
+    }
+
 }

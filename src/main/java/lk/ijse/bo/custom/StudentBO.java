@@ -12,4 +12,6 @@ public interface StudentBO extends SuperBO {
     void deleteStudent(StudentDTO dto);
     StudentDTO getStudent(String studentId);
     List<StudentDTO> getAllStudent();
+    String generateNewId();
+
 }

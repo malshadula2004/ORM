@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="studentForm" prefHeight="630.0" prefWidth="770.0"
-            style="-fx-background-color: #FFE5B4;"
+            style="-fx-background-color: linear-gradient(to bottom, #94ddf3, #FFFFFF);"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="lk.ijse.controller.StudentFormController">
@@ -39,7 +39,7 @@
          <children>
             <HBox spacing="10.0">
                <children>
-                  <Label text="ID :" prefWidth="100.0"/>
+                  <Label text="ID :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
                   <TextField fx:id="txtId" onAction="#txtIdOnAction" onKeyReleased="#txtIdKeyAction"
                              prefWidth="200.0"/>
                </children>
@@ -47,7 +47,7 @@
 
             <HBox spacing="10.0">
                <children>
-                  <Label text="Name :" prefWidth="100.0"/>
+                  <Label text="Name :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
                   <TextField fx:id="txtName" onAction="#txtNameOnAction" onKeyReleased="#txtNameKeyAction"
                              prefWidth="200.0"/>
                </children>
@@ -55,7 +55,7 @@
 
             <HBox spacing="10.0">
                <children>
-                  <Label text="Address :" prefWidth="100.0"/>
+                  <Label text="Address :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
                   <TextField fx:id="txtAddress" onAction="#txtAddressOnAction"
                              onKeyReleased="#txtAddressKeyAction" prefWidth="200.0"/>
                </children>
@@ -63,15 +63,15 @@
 
             <HBox spacing="10.0">
                <children>
-                  <Label text="Tel :" prefWidth="100.0"/>
+                  <Label text="Tel :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
                   <TextField fx:id="txtTel" onKeyReleased="#txtTelKeyAction" prefWidth="200.0"/>
                </children>
             </HBox>
 
-            <!-- Registration Date moved below Tel -->
+            <!-- Registration Date -->
             <HBox spacing="10.0">
                <children>
-                  <Label text="Registration Date :" prefWidth="130.0"/>
+                  <Label text="Registration Date :" prefWidth="130.0" style="-fx-font-weight: bold;"/>
                   <DatePicker fx:id="registerDatePicker"/>
                </children>
             </HBox>
@@ -79,37 +79,48 @@
       </VBox>
 
       <!-- Buttons -->
-      <HBox layoutX="320.0" layoutY="360.0" spacing="20.0">
+      <HBox layoutX="207.0" layoutY="360.0" spacing="20.0">
          <children>
-            <JFXButton onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="85.0"
-                       style="-fx-background-color: #228B22;" text="Save" textFill="WHITE">
+            <JFXButton onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="110.0"
+                       style="-fx-background-color: #228B22;" text="💾 Save" textFill="WHITE">
                <font>
                   <Font name="DejaVu Serif Bold" size="15.0"/>
                </font>
             </JFXButton>
 
-            <JFXButton onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="85.0"
-                       style="-fx-background-color: #E41B17;" text="Delete" textFill="WHITE">
+            <JFXButton onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="110.0"
+                       style="-fx-background-color: #E41B17;" text="🗑️ Delete" textFill="WHITE">
                <font>
                   <Font name="DejaVu Serif Bold" size="15.0"/>
                </font>
             </JFXButton>
 
-            <JFXButton onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="85.0"
-                       style="-fx-background-color: #1F45FC;" text="Update" textFill="WHITE">
+            <JFXButton onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="110.0"
+                       style="-fx-background-color: #1F45FC;" text="✏️ Update" textFill="WHITE">
                <font>
                   <Font name="DejaVu Serif Bold" size="15.0"/>
                </font>
             </JFXButton>
 
-            <JFXButton onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="85.0"
-                       style="-fx-background-color: #808080;" text="Clear" textFill="WHITE">
+            <JFXButton onAction="#btnClearOnAction" prefHeight="35.0" prefWidth="110.0"
+                       style="-fx-background-color: #808080;" text="🧹 Clear" textFill="WHITE">
                <font>
                   <Font name="DejaVu Serif Bold" size="15.0"/>
                </font>
             </JFXButton>
          </children>
       </HBox>
+
+
+      <HBox layoutX="520.0" layoutY="46.0" spacing="10.0">
+         <children>
+
+            <TextField fx:id="txtSearch" promptText="Enter name or ID"
+                       onKeyReleased="#txtSearchKeyReleased" prefWidth="200.0"/>
+         </children>
+      </HBox>
+
+
 
       <!-- Table -->
       <TableView fx:id="tblStudent" layoutX="57.0" layoutY="420.0"

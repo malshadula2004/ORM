@@ -16,4 +16,6 @@ public interface StudentDAO extends SuperDAO {
 
     Student findById(String id);
     List<Student> findAll();
+    String generateNewId();
+
 }
