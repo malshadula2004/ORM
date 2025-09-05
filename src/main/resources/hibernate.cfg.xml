@@ -7,9 +7,6 @@
   <persistence-unit name="student_pu">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-    <!-- Register all entity classes -->
-    <class>lk.ijse.entity.Student</class>
-    <class>lk.ijse.entity.Course</class>
 
 
 

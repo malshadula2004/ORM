@@ -12,4 +12,5 @@ public interface InstructorDAO extends SuperDAO {
     List<Instructor> getAll();
 
     String generateNewId();
+    int count();
 }

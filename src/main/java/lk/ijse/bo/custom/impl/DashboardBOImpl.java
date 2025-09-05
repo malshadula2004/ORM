@@ -3,6 +3,7 @@ package lk.ijse.bo.custom.impl;
 import lk.ijse.bo.custom.DashboardBO;
 import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custom.CourseDAO;
+import lk.ijse.dao.custom.InstructorDAO;
 import lk.ijse.dao.custom.QueryDAO;
 import lk.ijse.dao.custom.StudentDAO;
 import lk.ijse.dto.StudentDTO;
@@ -16,6 +17,8 @@ public class DashboardBOImpl implements DashboardBO {
     CourseDAO culinaryProgramDAO = (CourseDAO) DAOFactory.getDAO(DAOFactory.DAOType.PROGRAM);
     StudentDAO studentDAO = (StudentDAO) DAOFactory.getDAO(DAOFactory.DAOType.STUDENT);
     QueryDAO queryDAO = (QueryDAO) DAOFactory.getDAO(DAOFactory.DAOType.QUERY);
+    private final InstructorDAO instructorDAO =
+            (InstructorDAO) DAOFactory.getDAO(DAOFactory.DAOType.INSTRUCTOR);
 
     @Override
     public Long getCulinaryProgramCount(){
@@ -25,6 +28,12 @@ public class DashboardBOImpl implements DashboardBO {
     @Override
     public Long getStudentCount(){
         return studentDAO.getStudentCount();
+    }
+
+    @Override
+    public int getInstructorCount() {
+        assert instructorDAO != null;
+        return instructorDAO.count();
     }
 
     @Override

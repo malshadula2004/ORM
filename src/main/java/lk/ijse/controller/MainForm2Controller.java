@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainFormController {
+public class MainForm2Controller {
 
     @FXML
     private JFXButton btnDashboard;
@@ -70,15 +70,8 @@ public class MainFormController {
         loadForm("/studentForm.fxml", btnStudent);
     }
 
-    @FXML
-    void btnViewOnAction(ActionEvent event) {
-        loadForm("/viewAllForm.fxml", btnView);
-    }
 
-    @FXML
-    void btnSettingOnAction(ActionEvent event) {
-        loadForm("/settingForm.fxml", btnSetting);
-    }
+
 
     @FXML
     void btnInstructorOnAction(ActionEvent event) {
@@ -87,7 +80,7 @@ public class MainFormController {
 
     @FXML
     void btnPaymentOnAction(ActionEvent event) {
-        loadForm("/paymentForm.fxml", btnPayment);
+        loadForm("/paymentTableForm.fxml", btnPayment);
     }
 
     @FXML
@@ -128,12 +121,18 @@ public class MainFormController {
         btnDashboard.setStyle(style);
         btnProgram.setStyle(style);
         btnStudent.setStyle(style);
-        btnView.setStyle(style);
-        btnSetting.setStyle(style);
+
+
         btnInstructor.setStyle(style);
         btnPayment.setStyle(style);
         btnLessons.setStyle(style);
     }
 
 
+    public void btnViewOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnSettingOnAction(ActionEvent actionEvent) {
+        loadForm("/settingForm.fxml", btnSetting);
+    }
 }

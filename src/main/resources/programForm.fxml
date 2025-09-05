@@ -12,14 +12,14 @@
 
 <AnchorPane prefHeight="630.0" prefWidth="770.0" style="-fx-background-color: #FFE5B4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.CourseFormController">
    <children>
-      <Label layoutX="113.0" layoutY="46.0" text="Program Manage">
+      <Label layoutX="113.0" layoutY="46.0" text="Course Manage">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="30.0"/>
          </font>
       </Label>
       <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@asset/icons8-student-48.png"/>
+            <Image url="@asset/icon/driving-lessons.png"/>
          </image>
       </ImageView>
 

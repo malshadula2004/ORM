@@ -16,6 +16,9 @@ import java.util.List;
 
 public class PaymentTableFormController {
 
+    public TextField txtStuID;
+    public TextField txCouID;
+
     @FXML
     private TableView<PaymentTM> tblPayments;
 
@@ -42,9 +45,10 @@ public class PaymentTableFormController {
 
     @FXML
     public void initialize() {
+        // Setup columns
         colPaymentId.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPaymentId()));
-        colStudent.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStudentName()));
-        colProgram.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getProgramName()));
+        colStudent.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStudentId())); // now using ID
+        colProgram.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getProgramId())); // now using ID
         colAmount.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getAmount()));
         colDate.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDate()));
         colStatus.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getStatus()));
@@ -62,8 +66,12 @@ public class PaymentTableFormController {
             }
         });
 
-        // Load DB data
+        // Load DB data initially
         loadPayments();
+
+        // 🔍 Real-time search listeners
+        txtStuID.textProperty().addListener((obs, oldText, newText) -> searchPayments());
+        txCouID.textProperty().addListener((obs, oldText, newText) -> searchPayments());
     }
 
     private void loadPayments() {
@@ -73,11 +81,11 @@ public class PaymentTableFormController {
             for (PaymentDTO dto : dtos) {
                 paymentList.add(new PaymentTM(
                         dto.getPaymentId(),
-                        dto.getStudentId(),
-                        dto.getProgramId(),
+                        dto.getStudentId(),   // ✅ Student ID
+                        dto.getProgramId(),   // ✅ Program ID
                         dto.getAmount(),
                         dto.getPaymentDate(),
-                       dto.getStatus()
+                        dto.getStatus()
                 ));
             }
             tblPayments.setItems(paymentList);
@@ -85,5 +93,36 @@ public class PaymentTableFormController {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Failed to load payments!").show();
         }
+    }
+
+    // 🔍 Real-time search logic (by StudentID & ProgramID)
+    private void searchPayments() {
+        String stuId = txtStuID.getText().trim();
+        String couId = txCouID.getText().trim();
+
+        if (stuId.isEmpty() && couId.isEmpty()) {
+            // Both fields empty → show all
+            tblPayments.setItems(paymentList);
+            return;
+        }
+
+        ObservableList<PaymentTM> filteredList = FXCollections.observableArrayList();
+
+        for (PaymentTM payment : paymentList) {
+            boolean match = true;
+
+            if (!stuId.isEmpty() && !payment.getStudentId().toLowerCase().contains(stuId.toLowerCase())) {
+                match = false;
+            }
+            if (!couId.isEmpty() && !payment.getProgramId().toLowerCase().contains(couId.toLowerCase())) {
+                match = false;
+            }
+
+            if (match) {
+                filteredList.add(payment);
+            }
+        }
+
+        tblPayments.setItems(filteredList);
     }
 }

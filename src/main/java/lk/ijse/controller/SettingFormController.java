@@ -10,10 +10,8 @@ import javafx.scene.layout.Pane;
 import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custom.SettingBO;
 import lk.ijse.dto.UserDTO;
-import lk.ijse.tdm.StudentTm;
 import lk.ijse.tdm.UserTm;
 import lk.ijse.util.PasswordStorage;
-import lk.ijse.util.Regex;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +57,7 @@ public class SettingFormController {
         txtConfirmPassword.setVisible(false);
         txtUserName.setText(LoginFormController.userDTO.getUserName());
 
-        if (!LoginFormController.userDTO.getRole().equals("Admin")){
+        if (!LoginFormController.userDTO.getRole().equals("Admin")) {
             visiblePane.setVisible(false);
         }
 
@@ -73,7 +71,7 @@ public class SettingFormController {
         colDelete.setCellValueFactory(new PropertyValueFactory<>("delete"));
     }
 
-    private void loadAllUsers(){
+    private void loadAllUsers() {
         tblUser.getItems().clear();
         ObservableList<UserTm> userTms = tblUser.getItems();
         allUsers = settingBO.getAllUsers();
@@ -84,24 +82,23 @@ public class SettingFormController {
         tblUser.setItems(userTms);
     }
 
-    private Button createButton(){
+    private Button createButton() {
         Button button = new Button("Delete");
         button.setStyle("-fx-background-color: red;-fx-text-fill: white;");
 
         button.setOnAction((e) -> {
-            ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+            Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure to remove?", yes, no).showAndWait();
 
-            if(type.orElse(no) == yes) {
+            if (type.orElse(no) == yes) {
                 int selectedIndex = tblUser.getSelectionModel().getSelectedIndex();
-                try{
+                try {
                     settingBO.deleteUser(allUsers.get(selectedIndex));
                     loadAllUsers();
-                } catch (Exception exception){
-                    new Alert(Alert.AlertType.INFORMATION,"Select Column And Remove !!").show();
-                    return;
+                } catch (Exception exception) {
+                    new Alert(Alert.AlertType.ERROR, "Select a valid row to remove!").show();
                 }
                 tblUser.refresh();
             }
@@ -112,19 +109,62 @@ public class SettingFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        if (isValied()){
-            if (txtNewPassword.getText().trim().equals(txtConfirmPassword.getText().trim())){
-                UserDTO userDTO = new UserDTO(LoginFormController.userDTO.getUserId(), txtUserName.getText().trim(), PasswordStorage.hashPassword(txtConfirmPassword.getText().trim()), LoginFormController.userDTO.getRole());
-                settingBO.updateUser(userDTO);
-                loadAllUsers();
-                txtPassword.clear();
-                txtConfirmPassword.clear();
-                txtNewPassword.clear();
-            } else {
-                new Alert(Alert.AlertType.ERROR,"Incorrect Confirm Password !!").show();
+        String newUserName = txtUserName.getText().trim();
+        String currentPassword = txtPassword.getText().trim();
+        String newPassword = txtNewPassword.getText().trim();
+        String confirmPassword = txtConfirmPassword.getText().trim();
+
+        if (newUserName.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Username cannot be empty!").show();
+            return;
+        }
+
+        String hashedPassword = LoginFormController.userDTO.getPassword(); // default: old password
+
+        // If user wants to change password
+        if (!newPassword.isEmpty() || !confirmPassword.isEmpty()) {
+            if (currentPassword.isEmpty()) {
+                new Alert(Alert.AlertType.WARNING, "Enter your current password to change password!").show();
+                return;
             }
-        } else {
-            new Alert(Alert.AlertType.WARNING,"Please Enter All Fields !!").show();
+
+            if (!PasswordStorage.checkPassword(currentPassword, LoginFormController.userDTO.getPassword())) {
+                new Alert(Alert.AlertType.ERROR, "Incorrect Current Password!").show();
+                return;
+            }
+
+            if (!newPassword.equals(confirmPassword)) {
+                new Alert(Alert.AlertType.ERROR, "New Password and Confirm Password do not match!").show();
+                return;
+            }
+
+            hashedPassword = PasswordStorage.hashPassword(newPassword);
+        }
+
+        try {
+            UserDTO userDTO = new UserDTO(
+                    LoginFormController.userDTO.getUserId(),
+                    newUserName,
+                    hashedPassword,
+                    LoginFormController.userDTO.getRole()
+            );
+            settingBO.updateUser(userDTO);
+
+            // Update current user info in LoginFormController
+            LoginFormController.userDTO.setUserName(newUserName);
+            LoginFormController.userDTO.setPassword(hashedPassword);
+
+            loadAllUsers();
+
+            txtPassword.clear();
+            txtNewPassword.clear();
+            txtConfirmPassword.clear();
+
+            new Alert(Alert.AlertType.INFORMATION, "Updated Successfully!").show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Update Failed!").show();
         }
     }
 
@@ -135,12 +175,13 @@ public class SettingFormController {
 
     @FXML
     void txtPasswordOnAction(ActionEvent event) {
-        if (PasswordStorage.checkPassword(txtPassword.getText().trim(),LoginFormController.userDTO.getPassword())){
-            txtNewPassword.requestFocus();
+        // Show new password fields only if current password is correct
+        if (PasswordStorage.checkPassword(txtPassword.getText().trim(), LoginFormController.userDTO.getPassword())) {
             txtNewPassword.setVisible(true);
             txtConfirmPassword.setVisible(true);
+            txtNewPassword.requestFocus();
         } else {
-            new Alert(Alert.AlertType.ERROR,"Incorrect Password !!").show();
+            new Alert(Alert.AlertType.ERROR, "Incorrect Password!").show();
         }
     }
 
@@ -148,9 +189,4 @@ public class SettingFormController {
     void txtUserNameOnAction(ActionEvent event) {
         txtPassword.requestFocus();
     }
-
-    public boolean isValied() {
-        return !txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty() && !txtNewPassword.getText().isEmpty() && !txtConfirmPassword.getText().isEmpty();
-    }
-
 }

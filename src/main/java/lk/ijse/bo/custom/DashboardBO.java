@@ -10,4 +10,5 @@ public interface DashboardBO extends SuperBO {
     Long getCulinaryProgramCount();
     Long getStudentCount();
     List<StudentDTO> getAllProgramStudents();
+    int getInstructorCount();
 }

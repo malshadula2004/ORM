@@ -42,28 +42,41 @@ public class LoginFormController {
         if (!inputUserName.getText().isEmpty() && !inputPassword.getText().isEmpty()) {
             try {
                 UserDTO loginUser = loginBO.getUser(inputUserName.getText().trim());
-                    if (PasswordStorage.checkPassword(inputPassword.getText().trim(), loginUser.getPassword())){
-                        openMainForm();
-                        userDTO = loginUser;
-                    } else {
-                        new Alert(Alert.AlertType.ERROR,"Invalid User Password !!").show();
-                    }
-            } catch (InvalidCredentialsException e){
+
+                if (PasswordStorage.checkPassword(inputPassword.getText().trim(), loginUser.getPassword())) {
+                    userDTO = loginUser;
+                    openMainForm(loginUser.getRole());
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Invalid User Password !!").show();
+                }
+            } catch (InvalidCredentialsException e) {
                 ExceptionHandler.handleException(e);
             }
         } else {
-            new Alert(Alert.AlertType.WARNING,"Please Enter All Fields !!").show();
+            new Alert(Alert.AlertType.WARNING, "Please Enter All Fields !!").show();
         }
     }
 
-    private void openMainForm(){
+    private void openMainForm(String role) {
         try {
-            Scene scene = new Scene(FXMLLoader.load(this.getClass().getResource("/mainForm.fxml")));
+            String fxmlFile;
+
+            if ("Admin".equalsIgnoreCase(role)) {
+                fxmlFile = "/mainForm.fxml";  // Admin → mainForm
+            } else if ("Admissions Coordinator".equalsIgnoreCase(role)) {
+                fxmlFile = "/mainForm2.fxml"; // Coordinator → mainForm2
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Unknown role: " + role).show();
+                return;
+            }
+
+            Scene scene = new Scene(FXMLLoader.load(this.getClass().getResource(fxmlFile)));
             Stage stage = (Stage) fullLoginForm.getScene().getWindow();
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setResizable(false);
             stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -88,4 +101,10 @@ public class LoginFormController {
         inputPassword.requestFocus();
     }
 
+    // FIX: Add missing btnViewOnAction to prevent FXML error
+    @FXML
+    void btnViewOnAction(ActionEvent event) {
+        System.out.println("View button clicked!");
+        new Alert(Alert.AlertType.INFORMATION, "View Button Clicked!").show();
+    }
 }

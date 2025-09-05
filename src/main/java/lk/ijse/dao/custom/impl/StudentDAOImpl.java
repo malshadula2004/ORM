@@ -28,11 +28,33 @@ public class StudentDAOImpl implements StudentDAO {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
 
-        session.delete(student);
+        try {
+            String studentId = student.getStudentId();
 
-        transaction.commit();
-        session.close();
+            // Delete lessons linked to student
+            session.createQuery("DELETE FROM Lesson l WHERE l.student.studentId = :id")
+                    .setParameter("id", studentId)
+                    .executeUpdate();
+
+            // Delete payments linked to student
+            session.createQuery("DELETE FROM Payment p WHERE p.student.studentId = :id")
+                    .setParameter("id", studentId)
+                    .executeUpdate();
+
+            // Now delete student
+            session.delete(student);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
+
     @Override
     public void updateStudent(Student student) {
         Session session = FactoryConfiguration.getInstance().getSession();

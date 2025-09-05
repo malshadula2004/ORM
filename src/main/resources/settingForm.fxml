@@ -21,7 +21,7 @@
       </Label>
       <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@asset/icon/icons8-setting-48.png" />
+            <Image url="@asset/icon/cogwheel.png" />
          </image>
       </ImageView>
       <Label layoutX="55.0" layoutY="129.0" text="Change User details">
