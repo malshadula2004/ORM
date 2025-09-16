@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="studentForm" prefHeight="630.0" prefWidth="770.0"
+<AnchorPane fx:id="studentForm" prefHeight="680.0" prefWidth="770.0"
             style="-fx-background-color: linear-gradient(to bottom, #94ddf3, #FFFFFF);"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -28,15 +29,17 @@
       </Label>
 
       <!-- Icon -->
-      <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0"
+                 pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@asset/icon/graduating-student.png"/>
          </image>
       </ImageView>
 
       <!-- Input Fields -->
-      <VBox layoutX="57.0" layoutY="120.0" spacing="15.0">
+      <VBox layoutX="57.0" layoutY="100.0" spacing="15.0">
          <children>
+            <!-- ID (Top-Left) -->
             <HBox spacing="10.0">
                <children>
                   <Label text="ID :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
@@ -68,18 +71,39 @@
                </children>
             </HBox>
 
-            <!-- Registration Date -->
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="Email :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
+                  <TextField fx:id="txtEmail" onKeyReleased="#txtEmailKeyAction" prefWidth="200.0"/>
+               </children>
+            </HBox>
+
             <HBox spacing="10.0">
                <children>
                   <Label text="Registration Date :" prefWidth="130.0" style="-fx-font-weight: bold;"/>
                   <DatePicker fx:id="registerDatePicker"/>
                </children>
             </HBox>
+
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="Course :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
+                  <ComboBox fx:id="cmbCourse" prefWidth="200.0"/>
+               </children>
+            </HBox>
+
+            <!-- Amount (inside input section) -->
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="Amount :" prefWidth="100.0" style="-fx-font-weight: bold;"/>
+                  <TextField fx:id="txtAmount" promptText="Enter amount" prefWidth="200.0"/>
+               </children>
+            </HBox>
          </children>
       </VBox>
 
       <!-- Buttons -->
-      <HBox layoutX="207.0" layoutY="360.0" spacing="20.0">
+      <HBox layoutX="207.0" layoutY="430.0" spacing="20.0">
          <children>
             <JFXButton onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="110.0"
                        style="-fx-background-color: #228B22;" text="💾 Save" textFill="WHITE">
@@ -111,27 +135,27 @@
          </children>
       </HBox>
 
-
+      <!-- Search -->
       <HBox layoutX="520.0" layoutY="46.0" spacing="10.0">
          <children>
-
             <TextField fx:id="txtSearch" promptText="Enter name or ID"
                        onKeyReleased="#txtSearchKeyReleased" prefWidth="200.0"/>
          </children>
       </HBox>
 
-
-
       <!-- Table -->
-      <TableView fx:id="tblStudent" layoutX="57.0" layoutY="420.0"
+      <TableView fx:id="tblStudent" layoutX="57.0" layoutY="490.0"
                  onMouseClicked="#tblStudentOnClickAction"
-                 prefHeight="180.0" prefWidth="656.0">
+                 prefHeight="160.0" prefWidth="656.0">
          <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="100.0"/>
             <TableColumn fx:id="colName" text="Name" prefWidth="150.0"/>
             <TableColumn fx:id="colAddress" text="Address" prefWidth="200.0"/>
             <TableColumn fx:id="colTel" text="Tel" prefWidth="100.0"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="150.0"/>
             <TableColumn fx:id="colRegisterDate" text="Register Date" prefWidth="120.0"/>
+            <TableColumn fx:id="colCourse" text="Course" prefWidth="120.0"/>
+            <TableColumn fx:id="colAmount" text="Amount" prefWidth="100.0"/>
          </columns>
       </TableView>
    </children>

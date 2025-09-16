@@ -1,19 +1,17 @@
 package lk.ijse.util;
 
 import javafx.scene.control.TextField;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Regex {
 
-
     public enum FieldType {
-        NAME, ADDRESS, TEL, MONTH, PRICE, STUDENTID, PROGRAMID
+        NAME, ADDRESS, TEL, MONTH, PRICE, STUDENTID, PROGRAMID, EMAIL
     }
 
     // Validation method
-    public static boolean isTextFieldValid(lk.ijse.util.TextField fieldType, String text) {
+    public static boolean isTextFieldValid(FieldType fieldType, String text) {
         String regex = switch (fieldType) {
             case NAME -> "^[A-Za-z]+(?: [A-Za-z]+)*$";
             case ADDRESS -> "^([A-z0-9]|[-\\,.@+]|\\s){4,}$";
@@ -22,6 +20,7 @@ public class Regex {
             case PRICE -> "^([0-9]+)(\\.[0-9]+)?$";
             case STUDENTID -> "^S\\d{3}$";
             case PROGRAMID -> "^CA\\d{4}$";
+            case EMAIL -> "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         };
 
         if (text == null || text.trim().isEmpty()) {
@@ -35,7 +34,7 @@ public class Regex {
     }
 
     // TextField ekata border color set karanna
-    public static boolean setTextColor(lk.ijse.util.TextField fieldType, TextField textField) {
+    public static boolean setTextColor(FieldType fieldType, TextField textField) {
         if (isTextFieldValid(fieldType, textField.getText())) {
             textField.setStyle("-fx-border-color: transparent; -fx-focus-color: transparent;");
             return true;

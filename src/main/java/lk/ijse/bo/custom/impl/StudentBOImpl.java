@@ -15,72 +15,61 @@ public class StudentBOImpl implements StudentBO {
 
     @Override
     public void saveStudent(StudentDTO dto) {
-        Student student = new Student(
-                dto.getStudentId(),
-                dto.getName(),
-                dto.getAddress(),
-                dto.getTel(),
-                dto.getRegistrationDate()
-        );
-        studentDAO.saveStudent(student);
+        studentDAO.saveStudent(toEntity(dto));
     }
 
     @Override
     public void updateStudent(StudentDTO dto) {
-        Student student = new Student(
-                dto.getStudentId(),
-                dto.getName(),
-                dto.getAddress(),
-                dto.getTel(),
-                dto.getRegistrationDate()
-        );
-        studentDAO.updateStudent(student);
+        studentDAO.updateStudent(toEntity(dto));
     }
 
     @Override
     public void deleteStudent(StudentDTO dto) {
-        Student student = new Student(
-                dto.getStudentId(),
-                dto.getName(),
-                dto.getAddress(),
-                dto.getTel(),
-                dto.getRegistrationDate()
-        );
-        studentDAO.deleteStudent(student);
+        studentDAO.deleteStudent(toEntity(dto));
     }
 
     @Override
-    public StudentDTO getStudent(String studentId) {
-        Student student = studentDAO.getStudent(studentId);
-        if (student == null) return null;
-
-        return new StudentDTO(
-                student.getStudentId(),
-                student.getName(),
-                student.getAddress(),
-                student.getTel(),
-                student.getRegistrationDate()
-        );
+    public StudentDTO getStudent(String id) {
+        Student s = studentDAO.getStudent(id);
+        return s != null ? toDTO(s) : null;
     }
 
     @Override
     public List<StudentDTO> getAllStudent() {
-        List<Student> all = studentDAO.getAllStudent();
-        List<StudentDTO> dtos = new ArrayList<>();
-        for (Student s : all) {
-            dtos.add(new StudentDTO(
-                    s.getStudentId(),
-                    s.getName(),
-                    s.getAddress(),
-                    s.getTel(),
-                    s.getRegistrationDate()
-            ));
-        }
-        return dtos;
+        List<Student> list = studentDAO.getAllStudent();
+        List<StudentDTO> dtoList = new ArrayList<>();
+        for (Student s : list) dtoList.add(toDTO(s));
+        return dtoList;
     }
 
     @Override
     public String generateNewId() {
         return studentDAO.generateNewId();
+    }
+
+    private Student toEntity(StudentDTO dto) {
+        return new Student(
+                dto.getStudentId(),
+                dto.getName(),
+                dto.getAddress(),
+                dto.getTel(),
+                dto.getRegistrationDate(),
+                dto.getEmail(),
+                dto.getCourse(),
+                dto.getAmount()
+        );
+    }
+
+    private StudentDTO toDTO(Student entity) {
+        return new StudentDTO(
+                entity.getStudentId(),
+                entity.getName(),
+                entity.getAddress(),
+                entity.getTel(),
+                entity.getRegistrationDate(),
+                entity.getEmail(),
+                entity.getCourse(),
+                entity.getAmount()
+        );
     }
 }

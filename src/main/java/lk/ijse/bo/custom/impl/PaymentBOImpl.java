@@ -56,7 +56,16 @@ public class PaymentBOImpl implements PaymentBO {
     @Override
     public List<StudentDTO> getAllStudents() {
         return studentDAO.findAll().stream()
-                .map(s -> new StudentDTO(s.getStudentId(), s.getName(), s.getAddress(), s.getTel(), s.getRegistrationDate()))
+                .map(s -> new StudentDTO(
+                        s.getStudentId(),
+                        s.getName(),
+                        s.getAddress(),
+                        s.getTel(),
+                        s.getRegistrationDate(),
+                        s.getEmail(),
+                        null,
+                        s.getAmount()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +76,6 @@ public class PaymentBOImpl implements PaymentBO {
                 .map(p -> new courseDTO(p.getProgramId(), p.getProgramName(), p.getDuration(), p.getFee()))
                 .collect(Collectors.toList());
     }
-
 
     private Payment toEntity(PaymentDTO dto) {
         Student student = new Student(dto.getStudentId());
@@ -85,8 +93,6 @@ public class PaymentBOImpl implements PaymentBO {
         );
     }
 
-
-
     private PaymentDTO toDTO(Payment entity) {
         return new PaymentDTO(
                 entity.getPaymentId(),
@@ -96,17 +102,44 @@ public class PaymentBOImpl implements PaymentBO {
                 entity.getPaymentDate().toString(),
                 entity.getStatus()
         );
-
     }
 
     @Override
     public boolean updateStatus(String paymentId, String newStatus) throws Exception {
-        assert paymentDAO != null;
-        Payment payment = paymentDAO.findById(paymentId); // find by ID
+        Payment payment = paymentDAO.findById(paymentId);
         if (payment != null) {
             payment.setStatus(newStatus);
-            return paymentDAO.update(payment); // save updated status
+            return paymentDAO.update(payment);
         }
         return false;
+    }
+
+    // 🔹 New methods for controller calculations
+    @Override
+    public StudentDTO findStudentById(String studentId) {
+        Student s = studentDAO.findById(studentId);
+        if (s == null) return null;
+        return new StudentDTO(
+                s.getStudentId(),
+                s.getName(),
+                s.getAddress(),
+                s.getTel(),
+                s.getRegistrationDate(),
+                s.getEmail(),
+                null,
+                s.getAmount()
+        );
+    }
+
+    @Override
+    public courseDTO findProgramById(String programId) {
+        course c = programDAO.findById(programId);
+        if (c == null) return null;
+        return new courseDTO(
+                c.getProgramId(),
+                c.getProgramName(),
+                c.getDuration(),
+                c.getFee()
+        );
     }
 }

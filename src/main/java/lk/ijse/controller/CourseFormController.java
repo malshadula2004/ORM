@@ -21,7 +21,8 @@ import java.util.List;
 
 public class CourseFormController {
 
-    public TextField txtSearch;
+    @FXML
+    private TextField txtSearch;
     @FXML
     private TableColumn<?, ?> colDuration;
     @FXML
@@ -151,30 +152,24 @@ public class CourseFormController {
 
     public boolean isValied() {
         // txtId skip (auto-generated)
-        if (!Regex.setTextColor(lk.ijse.util.TextField.NAME, txtName)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.TextField.MONTH, txtDuration)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.TextField.PRICE, txtFee)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.NAME, txtName)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.MONTH, txtDuration)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.PRICE, txtFee)) return false;
         return true;
     }
 
     @FXML void txtIdKeyAction(KeyEvent event) {}
-    @FXML void txtNameKeyAction(KeyEvent event) { Regex.setTextColor(lk.ijse.util.TextField.NAME, txtName);}
-    @FXML void txtDurationKeyAction(KeyEvent event) { Regex.setTextColor(lk.ijse.util.TextField.MONTH, txtDuration);}
-    @FXML void txtFeeKeyAction(KeyEvent event) { Regex.setTextColor(lk.ijse.util.TextField.PRICE, txtFee);}
+    @FXML void txtNameKeyAction(KeyEvent event) { Regex.setTextColor(Regex.FieldType.NAME, txtName);}
+    @FXML void txtDurationKeyAction(KeyEvent event) { Regex.setTextColor(Regex.FieldType.MONTH, txtDuration);}
+    @FXML void txtFeeKeyAction(KeyEvent event) { Regex.setTextColor(Regex.FieldType.PRICE, txtFee);}
 
-    public void txtDurationOnAction(ActionEvent actionEvent) {
-    }
-
-    public void txtNameOnAction(ActionEvent actionEvent) {
-    }
-
-    public void txtIdOnAction(ActionEvent actionEvent) {
-    }
+    public void txtDurationOnAction(ActionEvent actionEvent) {}
+    public void txtNameOnAction(ActionEvent actionEvent) {}
+    public void txtIdOnAction(ActionEvent actionEvent) {}
 
     @FXML
     public void txtSearchKeyReleased(KeyEvent keyEvent) {
-        String searchText = txtSearch.getText().toLowerCase(); // search text
-
+        String searchText = txtSearch.getText().toLowerCase();
 
         List<courseDTO> allPrograms = programBO.getAllCulinaryProgram();
         ObservableList<courseTM> filteredList = tblProgram.getItems();
@@ -194,5 +189,4 @@ public class CourseFormController {
 
         tblProgram.setItems(filteredList);
     }
-
 }

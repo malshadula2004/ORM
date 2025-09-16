@@ -9,21 +9,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="instructorForm" prefHeight="630.0" prefWidth="770.0"
+<AnchorPane fx:id="instructorForm" prefHeight="650.0" prefWidth="770.0"
             style="-fx-background-color: linear-gradient(to bottom, #94ddf3, #FFFFFF);"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="lk.ijse.controller.InstructorFormController">
-
-    <HBox layoutX="520.0" layoutY="46.0" spacing="10.0">
-        <children>
-
-            <TextField fx:id="txtSearch" promptText="Enter name or ID"
-                       onKeyReleased="#txtSearchKeyReleased" prefWidth="200.0"/>
-        </children>
-    </HBox>
 
     <!-- Title -->
     <Label layoutX="113.0" layoutY="46.0" text="Instructor Manage" style="-fx-font-weight: bold;">
@@ -33,33 +26,65 @@
     </Label>
 
     <!-- Icon -->
-    <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="45.0" layoutY="40.0"
+               pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@asset/icon/online-learning.png"/>
         </image>
     </ImageView>
 
+    <!-- Search -->
+    <HBox layoutX="520.0" layoutY="46.0" spacing="10.0">
+        <children>
+            <TextField fx:id="txtSearch" promptText="Enter name or ID"
+                       onKeyReleased="#txtSearchKeyReleased" prefWidth="200.0"/>
+        </children>
+    </HBox>
+
     <!-- Input Fields -->
-    <Label layoutX="57.0" layoutY="142.0" text="ID :" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="txtInstructorId" layoutX="128.0" layoutY="138.0" />
+    <VBox layoutX="57.0" layoutY="120.0" spacing="15.0">
+        <children>
+            <HBox spacing="10.0">
+                <children>
+                    <Label text="ID :" prefWidth="120.0" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtInstructorId" prefWidth="200.0"/>
+                </children>
+            </HBox>
 
-    <Label layoutX="57.0" layoutY="199.0" text="Name :" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="txtName" layoutX="128.0" layoutY="195.0" />
+            <HBox spacing="10.0">
+                <children>
+                    <Label text="Name :" prefWidth="120.0" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtName" prefWidth="200.0"/>
+                </children>
+            </HBox>
 
-    <Label layoutX="57.0" layoutY="252.0" text="Specialization :" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="txtSpecialization" layoutX="150.0" layoutY="248.0" prefWidth="138.0"/>
+            <HBox spacing="10.0">
+                <children>
+                    <Label text="Specialization :" prefWidth="120.0" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtSpecialization" prefWidth="200.0"/>
+                </children>
+            </HBox>
 
-    <!-- Table shifted 1cm up -->
-    <TableView fx:id="tblInstructor" layoutX="57.0" layoutY="400.0" prefHeight="200.0" prefWidth="656.0" onMouseClicked="#tblInstructorOnClickAction">
-        <columns>
-            <TableColumn fx:id="colId" prefWidth="120.0" text="ID" />
-            <TableColumn fx:id="colName" prefWidth="200.0" text="Name" />
-            <TableColumn fx:id="colSpecialization" prefWidth="200.0" text="Specialization" />
-        </columns>
-    </TableView>
+            <HBox spacing="10.0">
+                <children>
+                    <Label text="Email :" prefWidth="120.0" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtEmail" prefWidth="200.0"
+                               onKeyReleased="#txtEmaileyAction"/> <!-- ✅ Email validation -->
+                </children>
+            </HBox>
 
-    <!-- Buttons in HBox, shifted 1cm down -->
-    <HBox layoutX="207.0" layoutY="334.0" spacing="20.0">
+            <HBox spacing="10.0">
+                <children>
+                    <Label text="Tel :" prefWidth="120.0" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="txtTel" prefWidth="200.0"
+                               onKeyReleased="#txtTelKeyAction"/> <!-- ✅ Tel validation -->
+                </children>
+            </HBox>
+        </children>
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox layoutX="207.0" layoutY="400.0" spacing="20.0">
         <children>
             <JFXButton onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="110.0"
                        style="-fx-background-color: #228B22;" text="💾 Save" textFill="WHITE">
@@ -90,5 +115,18 @@
             </JFXButton>
         </children>
     </HBox>
+
+    <!-- Table -->
+    <TableView fx:id="tblInstructor" layoutX="57.0" layoutY="460.0"
+               prefHeight="180.0" prefWidth="656.0"
+               onMouseClicked="#tblInstructorOnClickAction">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="100.0" text="ID" />
+            <TableColumn fx:id="colName" prefWidth="140.0" text="Name" />
+            <TableColumn fx:id="colSpecialization" prefWidth="160.0" text="Specialization" />
+            <TableColumn fx:id="colEmail" prefWidth="160.0" text="Email" />
+            <TableColumn fx:id="colTel" prefWidth="100.0" text="Tel" />
+        </columns>
+    </TableView>
 
 </AnchorPane>

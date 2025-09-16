@@ -15,7 +15,7 @@ public class Launcher extends Application {
 
         FactoryConfiguration.getInstance();
 
-        stage.setScene(new Scene(FXMLLoader.load(this.getClass().getResource("/loginform.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(this.getClass().getResource("/loginForm.fxml"))));
         //stage.initStyle(StageStyle.UNDECORATED);
         stage.setResizable(false);
         stage.centerOnScreen();

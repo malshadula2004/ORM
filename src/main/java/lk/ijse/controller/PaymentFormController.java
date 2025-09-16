@@ -10,8 +10,6 @@ import lk.ijse.dto.PaymentDTO;
 import lk.ijse.dto.StudentDTO;
 import lk.ijse.dto.courseDTO;
 
-import java.sql.Date;
-
 public class PaymentFormController {
 
     @FXML private TextField txtPaymentId;
@@ -19,7 +17,7 @@ public class PaymentFormController {
     @FXML private ComboBox<String> cmbProgram;
     @FXML private TextField txtAmount;
     @FXML private DatePicker dpPaymentDate;
-    @FXML private ComboBox<String> cmbStatus;
+    @FXML private TextField txtStatus; // Status field now as TextField
     @FXML private Button btnMakePayment;
     @FXML private Button btnCancel;
 
@@ -27,41 +25,63 @@ public class PaymentFormController {
 
     @FXML
     public void initialize() {
-        // Generate Payment ID
         txtPaymentId.setText(paymentBO.generatePaymentId());
 
-        // Load status options
-        ObservableList<String> statusList = FXCollections.observableArrayList("COMPLETED", "PENDING", "FAILED");
-        cmbStatus.setItems(statusList);
-
-        // Load Student IDs
         ObservableList<String> studentList = FXCollections.observableArrayList();
-        paymentBO.getAllStudents().forEach(student -> studentList.add(student.getStudentId()));
+        paymentBO.getAllStudents().forEach(s -> studentList.add(s.getStudentId()));
         cmbStudent.setItems(studentList);
 
-        // Load Program IDs
         ObservableList<String> programList = FXCollections.observableArrayList();
-        paymentBO.getAllPrograms().forEach(program -> programList.add(program.getProgramId()));
+        paymentBO.getAllPrograms().forEach(p -> programList.add(p.getProgramId()));
         cmbProgram.setItems(programList);
+
+        cmbStudent.setOnAction(e -> calculatePaymentAmount());
+        cmbProgram.setOnAction(e -> calculatePaymentAmount());
+    }
+
+    private void calculatePaymentAmount() {
+        String studentId = cmbStudent.getValue();
+        String programId = cmbProgram.getValue();
+
+        if (studentId != null && programId != null) {
+            StudentDTO student = paymentBO.findStudentById(studentId);
+            courseDTO program = paymentBO.findProgramById(programId);
+
+            if (student != null && program != null) {
+                double paymentAmount = program.getFee() - (student.getAmount() != null ? student.getAmount() : 0);
+                txtAmount.setText(String.valueOf(paymentAmount));
+
+                if (paymentAmount > 0) {
+                    txtStatus.setText("PENDING");
+                    txtStatus.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                } else {
+                    txtStatus.setText("COMPLETED");
+                    txtStatus.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                }
+            }
+        }
     }
 
     @FXML
     private void btnMakePaymentOnAction() {
-        PaymentDTO dto = new PaymentDTO(
-                txtPaymentId.getText(),
-                cmbStudent.getValue(),
-                cmbProgram.getValue(),
-                Double.parseDouble(txtAmount.getText()),
-                dpPaymentDate.getValue() != null ? dpPaymentDate.getValue().toString() : null, // <-- මෙය
-                cmbStatus.getValue()
-        );
+        try {
+            PaymentDTO dto = new PaymentDTO(
+                    txtPaymentId.getText(),
+                    cmbStudent.getValue(),
+                    cmbProgram.getValue(),
+                    Double.parseDouble(txtAmount.getText()),
+                    dpPaymentDate.getValue() != null ? dpPaymentDate.getValue().toString() : null,
+                    txtStatus.getText()
+            );
 
-
-        if (paymentBO.savePayment(dto)) {
-            new Alert(Alert.AlertType.INFORMATION, "Payment Saved Successfully!").show();
-            clearForm();
-        } else {
-            new Alert(Alert.AlertType.ERROR, "Failed to Save Payment!").show();
+            if (paymentBO.savePayment(dto)) {
+                new Alert(Alert.AlertType.INFORMATION, "Payment Saved Successfully!").show();
+                clearForm();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to Save Payment!").show();
+            }
+        } catch (NumberFormatException ex) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Amount!").show();
         }
     }
 
@@ -76,6 +96,6 @@ public class PaymentFormController {
         cmbProgram.getSelectionModel().clearSelection();
         txtAmount.clear();
         dpPaymentDate.setValue(null);
-        cmbStatus.getSelectionModel().clearSelection();
+        txtStatus.clear();
     }
 }

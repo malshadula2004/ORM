@@ -1,7 +1,5 @@
 package lk.ijse.dao.custom.impl;
 
-import jakarta.persistence.EntityManager;
-import lk.ijse.dao.HibernateUtil;
 import lk.ijse.dao.custom.InstructorDAO;
 import lk.ijse.db.FactoryConfiguration;
 import lk.ijse.entity.Instructor;
@@ -70,7 +68,7 @@ public class InstructorDAOImpl implements InstructorDAO {
 
         if (lastId != null) {
             int newId = Integer.parseInt(lastId.replace("I", "")) + 1;
-            return String.format("I%03d", newId); // I001, I002...
+            return String.format("I%03d", newId);
         } else {
             return "I001";
         }
@@ -80,12 +78,9 @@ public class InstructorDAOImpl implements InstructorDAO {
     public int count() {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-
         Long total = (Long) session.createQuery("SELECT COUNT(i) FROM Instructor i").uniqueResult();
-
         transaction.commit();
         session.close();
         return total.intValue();
     }
-
 }

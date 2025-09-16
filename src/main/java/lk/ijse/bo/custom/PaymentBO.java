@@ -18,5 +18,10 @@ public interface PaymentBO extends SuperBO {
     // Add for loading ComboBoxes
     List<StudentDTO> getAllStudents();
     List<courseDTO> getAllPrograms();
+
     boolean updateStatus(String paymentId, String newStatus) throws Exception;
+
+
+    StudentDTO findStudentById(String studentId);
+    courseDTO findProgramById(String programId);
 }

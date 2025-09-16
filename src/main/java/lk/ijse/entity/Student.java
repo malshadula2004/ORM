@@ -23,8 +23,14 @@ public class Student {
     private String address;
     private Long tel;
     private Date registrationDate;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
     private int someInt;
 
+    private String course;  // single course
+    private Double amount;  // amount associated with student
 
     @ManyToMany
     @JoinTable(
@@ -41,28 +47,20 @@ public class Student {
     private List<Lesson> lessons = new ArrayList<>();
 
 
-    public Student(String studentId, String name, String address, Long tel, Date registrationDate) {
+    public Student(String studentId, String name, String address, Long tel, Date registrationDate,
+                   String email, String course, Double amount) {
         this.studentId = studentId;
         this.name = name;
         this.address = address;
         this.tel = tel;
         this.registrationDate = registrationDate;
-        this.someInt = 0;
-        this.courses = new ArrayList<>();
-        this.lessons = new ArrayList<>();
-        this.payments = new ArrayList<>();
+        this.email = email;
+        this.course = course;
+        this.amount = amount;
     }
 
 
     public Student(String studentId) {
         this.studentId = studentId;
-        this.name = "";
-        this.address = "";
-        this.tel = 0L;
-        this.registrationDate = new Date(System.currentTimeMillis());
-        this.someInt = 0;
-        this.courses = new ArrayList<>();
-        this.lessons = new ArrayList<>();
-        this.payments = new ArrayList<>();
     }
 }

@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.collections.FXCollections?>
 <AnchorPane prefHeight="458.0" prefWidth="600" style="-fx-background-color: linear-gradient(to bottom, #94ddf3, #FFFFFF);" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.PaymentFormController">
 
     <children>
@@ -30,7 +31,7 @@
 
         <!-- Amount -->
         <Label layoutX="80" layoutY="250" style="-fx-font-weight: bold;" text="Amount:" />
-        <TextField fx:id="txtAmount" layoutX="200" layoutY="245" prefWidth="250" />
+        <TextField fx:id="txtAmount" layoutX="200" layoutY="245" prefWidth="250" editable="false" />
 
         <!-- Payment Date -->
         <Label layoutX="80" layoutY="300" style="-fx-font-weight: bold;" text="Payment Date:" />
@@ -38,7 +39,10 @@
 
         <!-- Status -->
         <Label layoutX="80" layoutY="350" style="-fx-font-weight: bold;" text="Status:" />
-        <ComboBox fx:id="cmbStatus" layoutX="200" layoutY="345" prefWidth="250" />
+        <!-- Status -->
+        <Label layoutX="80" layoutY="350" style="-fx-font-weight: bold;" text="Status:" />
+        <TextField fx:id="txtStatus" layoutX="200" layoutY="345" prefWidth="250" promptText=" COMPLETED or PENDING"/>
+
 
         <!-- Buttons -->
         <Button fx:id="btnMakePayment" layoutX="287.0" layoutY="400.0" onAction="#btnMakePaymentOnAction" prefHeight="31.0" prefWidth="149.0" style="-fx-font-weight: bold; -fx-background-color: #0f933d;" text="💳 Make Payment" textFill="WHITE" />

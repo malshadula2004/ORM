@@ -42,7 +42,7 @@ public class DashboardBOImpl implements DashboardBO {
         List<Student> allProgramsStudent = queryDAO.getAllProgramsStudent();
 
         for (Student student : allProgramsStudent) {
-            studentDTOS.add(new StudentDTO(student.getStudentId(),student.getName(),student.getAddress(),student.getTel(),student.getRegistrationDate()));
+            studentDTOS.add(new StudentDTO(student.getStudentId(),student.getName(),student.getAddress(),student.getTel(),student.getRegistrationDate(),student.getEmail(),student.getCourse(),student.getAmount()));
         }
         return studentDTOS;
     }

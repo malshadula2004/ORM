@@ -14,32 +14,25 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.bo.BOFactory;
+import lk.ijse.bo.custom.CourseBO;
 import lk.ijse.bo.custom.StudentBO;
 import lk.ijse.dto.StudentDTO;
+import lk.ijse.dto.courseDTO;
 import lk.ijse.tdm.StudentTm;
 import lk.ijse.util.Regex;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
 public class StudentFormController {
 
-    public TextField txtSearch;
     @FXML
-    private TableColumn<?, ?> colAddress;
+    public ComboBox<String> cmbCourse; // ComboBox to show course IDs
+    @FXML
+    public TextField txtAmount;
 
     @FXML
-    private TableColumn<?, ?> colId;
-
-    @FXML
-    private TableColumn<?, ?> colName;
-
-    @FXML
-    private TableColumn<?, ?> colRegisterDate;
-
-    @FXML
-    private TableColumn<?, ?> colTel;
+    private TextField txtSearch, txtId, txtName, txtAddress, txtTel, txtEmail;
 
     @FXML
     private DatePicker registerDatePicker;
@@ -51,23 +44,35 @@ public class StudentFormController {
     private TableView<StudentTm> tblStudent;
 
     @FXML
-    private TextField txtAddress;
+    private TableColumn<StudentTm, String> colId, colName, colAddress, colEmail;
 
     @FXML
-    private TextField txtId;
+    private TableColumn<StudentTm, Long> colTel;
 
     @FXML
-    private TextField txtName;
+    private TableColumn<StudentTm, Date> colRegisterDate;
 
     @FXML
-    private TextField txtTel;
+    private Button btnSave, btnUpdate, btnDelete, btnClear;
 
-    StudentBO studentBO = (StudentBO) BOFactory.getBO(BOFactory.BOType.STUDENT);
+    private final StudentBO studentBO = (StudentBO) BOFactory.getBO(BOFactory.BOType.STUDENT);
+    private final CourseBO courseBO = (CourseBO) BOFactory.getBO(BOFactory.BOType.COURSE); // Course BO
 
+    @FXML
     public void initialize() {
         setCellValueFactory();
         loadAllStudent();
+        loadCourseIds(); // load course IDs to ComboBox
         generateStudentId();
+    }
+
+    private void setCellValueFactory() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("studentId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
+        colRegisterDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     }
 
     private void loadAllStudent() {
@@ -81,60 +86,58 @@ public class StudentFormController {
                     studentDTO.getAddress(),
                     studentDTO.getTel(),
                     studentDTO.getRegistrationDate(),
-                    null
+                    studentDTO.getEmail(),
+                    studentDTO.getCourse(),
+                    studentDTO.getAmount()
             ));
         }
         tblStudent.setItems(studentTms);
     }
 
-    private void setCellValueFactory() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("studentId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
-        colRegisterDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+    // Load course IDs into ComboBox
+    private void loadCourseIds() {
+        try {
+            List<courseDTO> allCourses = courseBO.getAllCulinaryProgram();
+            ObservableList<String> courseIds = FXCollections.observableArrayList();
+            for (courseDTO course : allCourses) {
+                courseIds.add(course.getProgramId()); // Add only Course IDs
+            }
+            cmbCourse.setItems(courseIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    void btnClearOnAction(ActionEvent event) {
-        clearData();
-    }
+    private StudentDTO getStudentFromFields() {
+        double amount = 0;
+        try {
+            amount = Double.parseDouble(txtAmount.getText());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Invalid amount!");
+        }
 
-    private void clearData() {
-        txtId.clear();
-        txtName.clear();
-        txtAddress.clear();
-        txtTel.clear();
-        registerDatePicker.setValue(null);
-    }
-
-    private StudentDTO getObject() {
         return new StudentDTO(
                 txtId.getText(),
                 txtName.getText(),
                 txtAddress.getText(),
                 Long.parseLong(txtTel.getText()),
-                Date.valueOf(registerDatePicker.getValue())
+                Date.valueOf(registerDatePicker.getValue()),
+                txtEmail.getText(),
+                cmbCourse.getValue() != null ? cmbCourse.getValue() : null, // ComboBox value
+                amount
         );
-    }
-
-    @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-        if (isValidStudent()) {
-            studentBO.deleteStudent(getObject());
-            loadAllStudent();
-            clearData();
-        }
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         if (isValidStudent()) {
-            studentBO.saveStudent(getObject());
-            clearData();
+            // Save student first
+            studentBO.saveStudent(getStudentFromFields());
+            clearFields();
             loadAllStudent();
+            showAlert(Alert.AlertType.INFORMATION, "Student Saved!");
 
-
+            // Open Payment Form
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/paymentForm.fxml"));
                 Parent root = loader.load();
@@ -143,13 +146,10 @@ public class StudentFormController {
                 stage.setTitle("Payment Form");
                 stage.setScene(new Scene(root));
                 stage.show();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Failed to open Payment Form!").show();
+                showAlert(Alert.AlertType.ERROR, "Cannot open Payment Form!");
             }
-
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Please Enter All Fields !!").show();
         }
     }
 
@@ -157,86 +157,72 @@ public class StudentFormController {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         if (isValidStudent()) {
-            studentBO.updateStudent(getObject());
-            clearData();
+            studentBO.updateStudent(getStudentFromFields());
+            clearFields();
             loadAllStudent();
+            showAlert(Alert.AlertType.INFORMATION, "Student Updated!");
         }
+    }
+
+    @FXML
+    void btnDeleteOnAction(ActionEvent event) {
+        if (isValidStudent()) {
+            studentBO.deleteStudent(getStudentFromFields());
+            clearFields();
+            loadAllStudent();
+            showAlert(Alert.AlertType.INFORMATION, "Student Deleted!");
+        }
+    }
+
+    @FXML
+    void btnClearOnAction(ActionEvent event) {
+        clearFields();
     }
 
     @FXML
     void tblStudentOnClickAction(MouseEvent event) {
-        StudentTm selectedItem = tblStudent.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            txtId.setText(selectedItem.getStudentId());
-            txtName.setText(selectedItem.getName());
-            txtAddress.setText(selectedItem.getAddress());
-            txtTel.setText(String.valueOf(selectedItem.getTel()));
-            registerDatePicker.setValue(selectedItem.getRegistrationDate().toLocalDate());
+        StudentTm selected = tblStudent.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            txtId.setText(selected.getStudentId());
+            txtName.setText(selected.getName());
+            txtAddress.setText(selected.getAddress());
+            txtTel.setText(String.valueOf(selected.getTel()));
+            registerDatePicker.setValue(selected.getRegistrationDate().toLocalDate());
+            txtEmail.setText(selected.getEmail());
+            cmbCourse.setValue(selected.getCourse());
+            txtAmount.setText(String.valueOf(selected.getAmount()));
         }
     }
 
-    public boolean isValidStudent() {
-        if (!Regex.setTextColor(lk.ijse.util.TextField.STUDENTID, txtId)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.TextField.NAME, txtName)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.TextField.ADDRESS, txtAddress)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.TextField.TEL, txtTel)) return false;
-        if (txtId.getText().isEmpty() || registerDatePicker.getValue() == null) return false;
-        return true;
+    @FXML
+    void txtEmailKeyAction(KeyEvent event) {
+        Regex.setTextColor(Regex.FieldType.EMAIL, txtEmail);
     }
 
     @FXML
-    void txtAddressKeyAction(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.TextField.ADDRESS, txtAddress);
-    }
-
-    @FXML
-    void txtNameKeyAction(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.TextField.NAME, txtName);
-    }
-
-    @FXML
-    void txtTelKeyAction(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.TextField.TEL, txtTel);
-    }
-
-    @FXML
-    void txtIdKeyAction(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.TextField.STUDENTID, txtId);
-    }
-
-    public void txtIdOnAction(ActionEvent actionEvent) {
-    }
-
-    public void txtNameOnAction(ActionEvent actionEvent) {
-    }
-
-    public void txtAddressOnAction(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    public void txtSearchKeyReleased(KeyEvent keyEvent) {
-        String searchText = txtSearch.getText().toLowerCase(); // search text
-
-        // Original list from DB
-        List<StudentDTO> allStudent = studentBO.getAllStudent();
+    void txtSearchKeyReleased(KeyEvent event) {
+        String searchText = txtSearch.getText().toLowerCase();
         ObservableList<StudentTm> filteredList = FXCollections.observableArrayList();
 
-        for (StudentDTO studentDTO : allStudent) {
-            if (studentDTO.getStudentId().toLowerCase().contains(searchText) ||
-                    studentDTO.getName().toLowerCase().contains(searchText)) {
-
-                filteredList.add(new StudentTm(
-                        studentDTO.getStudentId(),
-                        studentDTO.getName(),
-                        studentDTO.getAddress(),
-                        studentDTO.getTel(),
-                        studentDTO.getRegistrationDate(),
-                        null
-                ));
+        for (StudentTm student : tblStudent.getItems()) {
+            if (student.getName().toLowerCase().contains(searchText) ||
+                    student.getStudentId().toLowerCase().contains(searchText)) {
+                filteredList.add(student);
             }
         }
+        tblStudent.setItems(filteredList);
+    }
 
-        tblStudent.setItems(filteredList); // update TableView
+    private void clearFields() {
+        txtId.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtTel.clear();
+        txtEmail.clear();
+        txtAmount.clear();
+        cmbCourse.getSelectionModel().clearSelection();
+        registerDatePicker.setValue(null);
+        generateStudentId();
     }
 
     private void generateStudentId() {
@@ -245,4 +231,31 @@ public class StudentFormController {
         txtId.setEditable(false);
     }
 
+    private boolean isValidStudent() {
+        if (!Regex.setTextColor(Regex.FieldType.STUDENTID, txtId)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.NAME, txtName)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.ADDRESS, txtAddress)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.TEL, txtTel)) return false;
+        if (!Regex.setTextColor(Regex.FieldType.EMAIL, txtEmail)) return false;
+        if (txtId.getText().isEmpty() || registerDatePicker.getValue() == null) return false;
+        if (txtAmount.getText().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Amount cannot be empty!");
+            return false;
+        }
+        return true;
+    }
+
+    private void showAlert(Alert.AlertType type, String msg) {
+        new Alert(type, msg).show();
+    }
+
+    public void txtIdOnAction(ActionEvent actionEvent) {}
+    public void txtIdKeyAction(KeyEvent keyEvent) {}
+    public void txtNameOnAction(ActionEvent actionEvent) {}
+    public void txtNameKeyAction(KeyEvent keyEvent) {}
+    public void txtAddressOnAction(ActionEvent actionEvent) {}
+    public void txtAddressKeyAction(KeyEvent keyEvent) {}
+    public void txtTelKeyAction(KeyEvent keyEvent) {
+        Regex.setTextColor(Regex.FieldType.TEL, txtTel);
+    }
 }

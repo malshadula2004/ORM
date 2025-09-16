@@ -8,10 +8,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="courseForm" prefHeight="630.0" prefWidth="770.0" style="-fx-background-color: #E6F7FF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.CouseFormController">
+<AnchorPane fx:id="courseForm" prefHeight="630.0" prefWidth="770.0" style="-fx-background-color: #E6F7FF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.CourseFormController">
     <children>
         <Label layoutX="113.0" layoutY="46.0" text="Course Manage ">
             <font>
@@ -25,9 +24,9 @@
         </ImageView>
 
         <!-- Input Fields -->
-        <TextField fx:id="txtCourseId" layoutX="128.0" layoutY="138.0" />
-        <TextField fx:id="txtCourseName" layoutX="128.0" layoutY="195.0" />
-        <TextField fx:id="txtDuration" layoutX="128.0" layoutY="248.0" />
+        <TextField fx:id="txtId" layoutX="128.0" layoutY="138.0" onAction="#txtIdOnAction"/>
+        <TextField fx:id="txtName" layoutX="128.0" layoutY="195.0" onAction="#txtNameOnAction"/>
+        <TextField fx:id="txtDuration" layoutX="128.0" layoutY="248.0" onAction="#txtDurationOnAction"/>
         <TextField fx:id="txtFee" layoutX="128.0" layoutY="307.0" />
         <TextField fx:id="txtDescription" layoutX="128.0" layoutY="366.0" prefWidth="250.0" />
 
@@ -49,10 +48,10 @@
         </Label>
 
         <!-- Table -->
-        <TableView fx:id="tblCourse" layoutX="57.0" layoutY="410.0" onMouseClicked="#tblCourseOnClickAction" prefHeight="200.0" prefWidth="656.0">
+        <TableView fx:id="tblProgram" layoutX="57.0" layoutY="410.0" onMouseClicked="#tblProgramOnClickAction" prefHeight="200.0" prefWidth="656.0">
             <columns>
-                <TableColumn fx:id="colCourseId" prefWidth="100.0" text="Course ID" />
-                <TableColumn fx:id="colCourseName" prefWidth="150.0" text="Name" />
+                <TableColumn fx:id="colId" prefWidth="100.0" text="Course ID" />
+                <TableColumn fx:id="colProgramName" prefWidth="150.0" text="Name" />
                 <TableColumn fx:id="colDuration" prefWidth="120.0" text="Duration" />
                 <TableColumn fx:id="colFee" prefWidth="120.0" text="Fee" />
                 <TableColumn fx:id="colDescription" prefWidth="160.0" text="Description" />

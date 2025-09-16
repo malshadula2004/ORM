@@ -21,18 +21,32 @@ public class Instructor {
     @Column(nullable = false)
     private String specialization;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    private String tel;
+
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     private List<course> courses = new ArrayList<>();
 
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
     private List<Lesson> lessons = new ArrayList<>();
 
-
+    // One arg constructor
     public Instructor(String instructorId) {
         this.instructorId = instructorId;
         this.name = "";
         this.specialization = "";
-        this.courses = new ArrayList<>();
-        this.lessons = new ArrayList<>();
+        this.email = "";
+        this.tel = "";
+    }
+
+
+    public Instructor(String instructorId, String name, String specialization, String email, String tel) {
+        this.instructorId = instructorId;
+        this.name = name;
+        this.specialization = specialization;
+        this.email = email;
+        this.tel = tel;
     }
 }
